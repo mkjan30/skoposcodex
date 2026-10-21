@@ -46,20 +46,27 @@ ${sections
 }
 
 /** Receipt for the client. */
+/** Receipt for the client, with the access steps that used to be a form step. */
 export function clientOnboardingEmail(name: string, service: ServiceOnboarding) {
   const first = name.split(/\s+/)[0];
+  const invite = site.contact.email ?? "us";
   return {
     subject: `We've got your onboarding details, ${first}`,
     text: `Hi ${first},
 
 Thanks for completing onboarding for ${service.label} with ${site.name}. A senior strategist is reviewing your answers and will reach out within 24 hours to schedule your kickoff call.
 
-If anything changes in the meantime, just reply to this email.
+Next step — give us access (please never send passwords). Invite ${invite} as a user on:
+${service.access.map((a) => `- ${a.platform}: ${a.how}`).join("\n")}
+
+No rush: we can also do this together on the kickoff call. If anything changes in the meantime, just reply to this email.
 
 — The ${site.name} team`,
     html: `<p>Hi ${escapeHtml(first)},</p>
 <p>Thanks for completing onboarding for <strong>${escapeHtml(service.label)}</strong> with ${site.name}. A senior strategist is reviewing your answers and will reach out within 24 hours to schedule your kickoff call.</p>
-<p>If anything changes in the meantime, just reply to this email.</p>
+<p><strong>Next step — give us access</strong> (please never send passwords). Invite <strong>${escapeHtml(invite)}</strong> as a user on:</p>
+<ul>${service.access.map((a) => `<li><strong>${escapeHtml(a.platform)}:</strong> ${escapeHtml(a.how)}</li>`).join("")}</ul>
+<p>No rush: we can also do this together on the kickoff call. If anything changes in the meantime, just reply to this email.</p>
 <p>— The ${site.name} team</p>`,
   };
 }

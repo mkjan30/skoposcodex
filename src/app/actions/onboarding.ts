@@ -1,6 +1,6 @@
 "use server";
 
-import { businessFields, goalsFields } from "@/content/onboarding/shared";
+import { businessFields, goalsFields, onboardingUploads } from "@/content/onboarding/shared";
 import { getOnboardingService } from "@/content/onboarding/services";
 import { sendEmail } from "@/lib/email";
 import { adminOnboardingEmail, clientOnboardingEmail } from "@/lib/emails/onboarding";
@@ -14,7 +14,7 @@ export type OnboardingResult =
   | {
       ok: false;
       message: string;
-      /** Wizard step to jump back to (2 business, 3 goals, 4 details, 5 documents). */
+      /** Wizard step to jump back to (2 about you, 3 goals/details/files). */
       step?: number;
       errors?: Record<string, string>;
     };
@@ -40,10 +40,10 @@ export async function submitOnboarding(
 
     // Re-validate every step against the same field config the browser used.
     const steps = [
-      { step: 2, title: "Business", fields: businessFields, raw: env.data.business },
+      { step: 2, title: "About you", fields: businessFields, raw: env.data.business },
       { step: 3, title: "Goals", fields: goalsFields, raw: env.data.goals },
       {
-        step: 4,
+        step: 3,
         title: `${service.label} details`,
         fields: service.details,
         raw: env.data.details,
@@ -63,14 +63,14 @@ export async function submitOnboarding(
     }
     const [business, goals, details] = clean;
 
-    const slots = new Set(service.uploads.map((u) => u.slot));
+    const slots = new Set(onboardingUploads.map((u) => u.slot));
     const badFile = files.find(
       (f) => !slots.has(f.slot) || !f.path.startsWith(`${submissionId}/${f.slot}/`),
     );
     if (badFile)
       return {
         ok: false,
-        step: 5,
+        step: 3,
         message: "One of the uploaded files is invalid. Please remove it and try again.",
       };
 
@@ -89,7 +89,7 @@ export async function submitOnboarding(
       if (!exists) {
         return {
           ok: false,
-          step: 5,
+          step: 3,
           message: `“${f.fileName}” didn't finish uploading. Please remove it and upload it again.`,
         };
       }

@@ -14,6 +14,7 @@ vi.mock("@/content/onboarding/shared", () => ({
     { name: "phone", label: "Phone", type: "tel", required: true },
     { name: "websiteUrl", label: "Website", type: "url" },
   ],
+  onboardingUploads: [{ slot: "assets", label: "Files" }],
   goalsFields: [
     { name: "monthlyBudget", label: "Budget", type: "select", required: true, options: ["$1–2k"] },
   ],
@@ -34,7 +35,6 @@ vi.mock("@/content/onboarding/services", () => ({
               options: ["Google", "Meta"],
             },
           ],
-          uploads: [{ slot: "past_campaign_reports", label: "Reports" }],
           access: [],
         }
       : undefined,
@@ -75,8 +75,8 @@ const payload = (over: Record<string, unknown> = {}) => ({
   details: { platforms: ["Google"] },
   files: [
     {
-      slot: "past_campaign_reports",
-      path: `${ID}/past_campaign_reports/abc-report.pdf`,
+      slot: "assets",
+      path: `${ID}/assets/abc-report.pdf`,
       fileName: "report.pdf",
       mimeType: "application/pdf",
       size: 1000,
@@ -116,25 +116,25 @@ describe("submitOnboarding", () => {
 
   it("returns the step and field errors for invalid answers without saving", async () => {
     const r = await submitOnboarding(payload({ details: { platforms: [] } }), "tok");
-    expect(r).toMatchObject({ ok: false, step: 4, errors: { platforms: expect.any(String) } });
+    expect(r).toMatchObject({ ok: false, step: 3, errors: { platforms: expect.any(String) } });
     expect(upsert).not.toHaveBeenCalled();
   });
 
-  it("rejects files outside the submission's own folder or for another service's slot", async () => {
+  it("rejects files outside the submission's own folder or with an unknown slot", async () => {
     const stranger = payload({
-      files: [{ ...payload().files[0], path: "other-id/past_campaign_reports/x.pdf" }],
+      files: [{ ...payload().files[0], path: "other-id/assets/x.pdf" }],
     });
-    expect(await submitOnboarding(stranger, "tok")).toMatchObject({ ok: false, step: 5 });
+    expect(await submitOnboarding(stranger, "tok")).toMatchObject({ ok: false, step: 3 });
     const wrongSlot = payload({
       files: [{ ...payload().files[0], slot: "logo", path: `${ID}/logo/x.pdf` }],
     });
-    expect(await submitOnboarding(wrongSlot, "tok")).toMatchObject({ ok: false, step: 5 });
+    expect(await submitOnboarding(wrongSlot, "tok")).toMatchObject({ ok: false, step: 3 });
     expect(upsert).not.toHaveBeenCalled();
   });
 
   it("rejects files that never finished uploading", async () => {
     exists.mockResolvedValue({ data: false, error: null });
-    expect(await submitOnboarding(payload(), "tok")).toMatchObject({ ok: false, step: 5 });
+    expect(await submitOnboarding(payload(), "tok")).toMatchObject({ ok: false, step: 3 });
     expect(upsert).not.toHaveBeenCalled();
   });
 

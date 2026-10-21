@@ -1,6 +1,9 @@
-import type { Field } from "@/lib/onboarding/types";
+import type { Field, UploadSlot } from "@/lib/onboarding/types";
 
-// Wizard step 2 "Business". businessName/contactName/email/phone/websiteUrl are promoted to columns server-side.
+// Kept deliberately short (≈3 minutes). Anything else is collected on the kickoff call.
+// businessName/contactName/email/phone/websiteUrl and monthlyBudget are promoted to columns server-side.
+
+/** Step 2 "About you". */
 export const businessFields: Field[] = [
   {
     name: "businessName",
@@ -44,7 +47,6 @@ export const businessFields: Field[] = [
     label: "Industry",
     type: "select",
     required: true,
-    half: true,
     options: [
       "Home services",
       "Health & wellness",
@@ -56,56 +58,9 @@ export const businessFields: Field[] = [
       "Other",
     ],
   },
-  {
-    name: "primaryCategory",
-    label: "Primary business category",
-    type: "text",
-    half: true,
-    placeholder: "Emergency plumber",
-    help: "How you'd describe your main service in a few words.",
-  },
-  {
-    name: "yearsInBusiness",
-    label: "Years in business",
-    type: "select",
-    half: true,
-    options: ["Not launched yet", "Less than 1 year", "1–3 years", "3–10 years", "10+ years"],
-  },
-  {
-    name: "employees",
-    label: "Team size",
-    type: "select",
-    half: true,
-    options: ["Just me", "2–5", "6–20", "21–50", "51–200", "200+"],
-  },
-  {
-    name: "businessDescription",
-    label: "What does your business do?",
-    type: "textarea",
-    required: true,
-    max: 5000,
-    placeholder: "A few sentences on your services, who you serve and what makes you different.",
-  },
-  {
-    name: "streetAddress",
-    label: "Street address",
-    type: "text",
-    placeholder: "123 Main St, Suite 4",
-  },
-  { name: "city", label: "City", type: "text", half: true },
-  { name: "state", label: "State / province", type: "text", half: true },
-  { name: "zip", label: "ZIP / postal code", type: "text", half: true },
-  { name: "country", label: "Country", type: "text", half: true, placeholder: "United States" },
-  {
-    name: "serviceAreas",
-    label: "Areas you serve",
-    type: "textarea",
-    placeholder: "One per line",
-    help: 'Cities, counties or regions — or "Nationwide".',
-  },
 ];
 
-// Wizard step 3 "Goals". monthlyBudget is promoted to a column server-side.
+/** Step 3, shared part: goals + an optional catch-all. */
 export const goalsFields: Field[] = [
   {
     name: "primaryGoal",
@@ -120,24 +75,6 @@ export const goalsFields: Field[] = [
       "Lower cost per lead",
       "Other",
     ],
-  },
-  {
-    name: "biggestChallenge",
-    label: "Biggest marketing challenge right now",
-    type: "textarea",
-    required: true,
-    placeholder: "e.g. We get traffic but very few calls.",
-  },
-  {
-    name: "idealCustomer",
-    label: "Who is your ideal customer?",
-    type: "textarea",
-    placeholder: "e.g. Homeowners aged 35–65 within 20 miles of Austin.",
-  },
-  {
-    name: "differentiator",
-    label: "Why do customers choose you over competitors?",
-    type: "textarea",
   },
   {
     name: "monthlyBudget",
@@ -164,30 +101,19 @@ export const goalsFields: Field[] = [
     options: ["As soon as possible", "Within 1 month", "1–3 months", "Just exploring"],
   },
   {
-    name: "startDate",
-    label: "Target start or launch date",
-    type: "text",
-    half: true,
-    placeholder: "e.g. March 1",
-  },
-  {
-    name: "workedWithAgency",
-    label: "Have you worked with an agency before?",
-    type: "radio",
-    half: true,
-    options: ["Yes", "No"],
-  },
-  { name: "previousAgency", label: "Which agency?", type: "text", half: true },
-  {
-    name: "previousAgencyOutcome",
-    label: "How did it go?",
+    name: "notes",
+    label: "Anything else we should know?",
     type: "textarea",
-    placeholder: "What worked, what didn't and why you moved on.",
+    placeholder: "Your biggest challenge, a deadline, a competitor you want to beat…",
+    help: "Optional — we'll ask for anything else on the kickoff call.",
   },
+];
+
+/** One optional uploader for every service (step 3). */
+export const onboardingUploads: UploadSlot[] = [
   {
-    name: "doNotTarget",
-    label: "Anything we should avoid?",
-    type: "textarea",
-    placeholder: "Services, areas or audiences you don't want to target.",
+    slot: "assets",
+    label: "Logo or brand files",
+    help: "Optional — logo, brand guide, past reports. You can always send more later.",
   },
 ];

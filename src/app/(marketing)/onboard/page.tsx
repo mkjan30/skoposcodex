@@ -31,7 +31,7 @@ export default function OnboardPage() {
               Let&apos;s build your <span className="text-gradient">growth strategy together.</span>
             </>
           }
-          description="This takes about 10–15 minutes. The more detail you share, the faster we can get results. Your answers save automatically in this browser."
+          description="Three quick steps, about 3 minutes. We’ll cover the rest on your kickoff call. Your answers save automatically in this browser."
         />
         <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {badges.map((b) => (

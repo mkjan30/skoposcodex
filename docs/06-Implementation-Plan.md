@@ -69,18 +69,23 @@ Tested locally without Supabase: field errors, focus management, input kept afte
 
 ## Phase 5 — Onboarding wizard (day 11–15)
 
+Simplified on 2026-10-22 (client feedback: too long). Now **3 steps, ~12 questions (9 required), ~3 minutes**; anything else is collected on the kickoff call.
+
+| Step        | Asks                                                                                                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 1 Service   | Primary service                                                                                                                    |
+| 2 About you | Business name, your name, email, phone, website (optional), industry                                                               |
+| 3 Goals     | 2 service questions (1 required), main goal, monthly budget, start timeline, "anything else?" (optional), one optional file upload |
+
+Removed: review step, address/team/history questions, most service-specific questions, per-service upload slots (now one optional uploader), the in-form access step (access instructions are emailed to the client as next steps).
+
 - [x] Field catalogue (`src/content/onboarding/`) drives UI, client validation and server validation from one config (`src/lib/onboarding/schema.ts`) + tests
-- [x] Wizard shell: step indicator (completed steps clickable), progress, Back/Continue (sticky on mobile), per-step validation, focus moves to first error / step heading
-- [x] Field renderers: text, email, tel, url, textarea, select, radio pills, checkbox pills (with max)
-- [x] localStorage autosave + "continue where I left off"; switching service confirms and clears service-specific answers/files
-- [x] `api/upload-url` (signed upload URLs, allow-list, 25 MB, rate-limited) + FileDrop with progress, retry, type/size/count checks
-- [x] Review step with Edit links; idempotent submit (client UUID, insert-ignore); thank-you screen; admin + client emails
-- [x] Access-grant instructions in step 5 (invite info@skoposcodex.com — never passwords)
+- [x] Wizard: step indicator, progress, Back/Continue (sticky on mobile), validation with focus on first error, autosave/resume (`onboard-draft-v2`), service-switch confirm
+- [x] `api/upload-url` (signed upload URLs, allow-list, 25 MB, rate-limited) + FileDrop with progress/retry
+- [x] Idempotent submit with Turnstile; admin email with all answers, client receipt with access steps (invite info@skoposcodex.com — never passwords)
 - [ ] ⏳ Live test from a real browser: upload a file and submit (Turnstile blocks automated browsers; uploads need production Supabase)
 
-Verified locally (no Supabase): validation and error focus on every step, review/edit/jump-back, resume after reload, service-switch dialog, upload type/size checks and graceful upload/submit failures. `/onboard` ships ~116 kB route JS (zod + catalogue); acceptable for a noindex page reached by link.
-
-**Done when:** each of the 5 service paths can be completed end-to-end on mobile and desktop, files land in the private bucket, row + files appear in DB.
+**Done when:** each service path can be completed on mobile and desktop, the file lands in the private bucket, row + file appear in DB.
 
 ## Phase 6 — Admin (day 16–17)
 

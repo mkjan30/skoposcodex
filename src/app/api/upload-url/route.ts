@@ -2,12 +2,12 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { onboardingServices } from "@/content/onboarding/services";
+import { onboardingUploads } from "@/content/onboarding/shared";
 import { ALLOWED_MIME, BUCKET, MAX_FILE_BYTES, safeFileName } from "@/lib/onboarding/schema";
 import { clientIp, hashIp, withinRateLimit } from "@/lib/security";
 import { createAdminClient } from "@/lib/supabase/server";
 
-const SLOTS = new Set(onboardingServices.flatMap((s) => s.uploads.map((u) => u.slot)));
+const SLOTS = new Set(onboardingUploads.map((u) => u.slot));
 
 const body = z.object({
   submissionId: z.uuid(),

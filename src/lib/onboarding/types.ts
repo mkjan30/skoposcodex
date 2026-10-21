@@ -42,11 +42,9 @@ export type ServiceOnboarding = {
   label: string;
   /** One line on the step-1 card. */
   description: string;
-  /** Step 4 questions. */
+  /** Step 3 service-specific questions. */
   details: Field[];
-  /** Step 5 upload slots (all optional). */
-  uploads: UploadSlot[];
-  /** Step 5: platforms the client should invite us to as a user — never passwords. */
+  /** Platforms the client should invite us to as a user — never passwords. Sent in the receipt email. */
   access: { platform: string; how: string }[];
 };
 

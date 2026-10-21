@@ -2,16 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import {
-  AlertCircle,
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  CheckCircle2,
-  KeyRound,
-  Loader2,
-  Pencil,
-} from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, Check, CheckCircle2, Loader2 } from "lucide-react";
 
 import { submitOnboarding } from "@/app/actions/onboarding";
 import { FieldInput } from "@/components/onboarding/field-input";
@@ -27,9 +18,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { businessFields, goalsFields } from "@/content/onboarding/shared";
+import { businessFields, goalsFields, onboardingUploads } from "@/content/onboarding/shared";
 import { getOnboardingService, onboardingServices } from "@/content/onboarding/services";
-import { site } from "@/content/site";
 import { validateStep } from "@/lib/onboarding/schema";
 import type {
   Field,
@@ -40,8 +30,9 @@ import type {
 } from "@/lib/onboarding/types";
 import { cn } from "@/lib/utils";
 
-const STORAGE_KEY = "onboard-draft-v1";
-const STEPS = ["Service", "Business", "Goals", "Details", "Documents", "Review"] as const;
+// v2: 3-step form. Bumped so drafts saved by the old 6-step form start fresh instead of breaking.
+const STORAGE_KEY = "onboard-draft-v2";
+const STEPS = ["Service", "About you", "Goals"] as const;
 type StepKey = "business" | "goals" | "details";
 
 type Draft = {
@@ -76,7 +67,6 @@ function readDraft(): Draft | null {
 
 const hasAnswers = (v: StepValues) =>
   Object.values(v).some((x) => (Array.isArray(x) ? x.length : x));
-const display = (v: FieldValue | undefined) => (Array.isArray(v) ? v.join(", ") : (v ?? ""));
 
 export function OnboardingWizard() {
   const [draft, setDraft] = useState<Draft | null>(null); // null until read on the client
@@ -150,10 +140,26 @@ export function OnboardingWizard() {
 
   const service = getOnboardingService(draft.service);
   const { step } = draft;
-  const fieldsFor: Record<2 | 3 | 4, { key: StepKey; fields: Field[] }> = {
-    2: { key: "business", fields: businessFields },
-    3: { key: "goals", fields: goalsFields },
-    4: { key: "details", fields: service?.details ?? [] },
+  // Step 3 holds two groups (shared goals + this service's questions), validated together.
+  const groups: Record<2 | 3, { key: StepKey; fields: Field[]; title?: string }[]> = {
+    2: [{ key: "business", fields: businessFields }],
+    3: [
+      // Service questions first, so the optional "anything else?" box in goals comes last.
+      {
+        key: "details",
+        fields: service?.details ?? [],
+        title: `About your ${service?.label ?? "project"}`,
+      },
+      { key: "goals", fields: goalsFields, title: "Goals and budget" },
+    ],
+  };
+  const validate = (n: 2 | 3) => {
+    const errs: Record<string, string> = {};
+    for (const g of groups[n]) {
+      const r = validateStep(g.fields, draft[g.key]);
+      if (!r.ok) Object.assign(errs, r.errors);
+    }
+    return errs;
   };
   const uploading = Object.values(busySlots).some(Boolean);
 
@@ -172,7 +178,7 @@ export function OnboardingWizard() {
 
   const chooseService = (key: ServiceKey) => {
     if (key === draft.service) return;
-    if (draft.service && (hasAnswers(draft.details) || draft.files.length)) return setSwitchTo(key);
+    if (draft.service && hasAnswers(draft.details)) return setSwitchTo(key);
     setDraft({ ...draft, service: key });
     setErrors({});
   };
@@ -183,25 +189,26 @@ export function OnboardingWizard() {
       focusAfterRender.current = "error";
       return;
     }
-    if (step >= 2 && step <= 4) {
-      const { key, fields } = fieldsFor[step as 2 | 3 | 4];
-      const r = validateStep(fields, draft[key]);
-      if (!r.ok) {
-        setErrors(r.errors);
+    if (step === 2) {
+      const errs = validate(2);
+      if (Object.keys(errs).length) {
+        setErrors(errs);
         focusAfterRender.current = "error";
         return;
       }
-    }
-    if (step === 5 && uploading) {
-      setMessage("Please wait for your uploads to finish.");
-      focusAfterRender.current = "error";
-      return;
     }
     goTo(step + 1);
   };
 
   const submit = async () => {
     if (!service) return goTo(1);
+    const errs = validate(3);
+    if (Object.keys(errs).length || uploading) {
+      setErrors(errs);
+      setMessage(uploading ? "Please wait for your upload to finish." : undefined);
+      focusAfterRender.current = "error";
+      return;
+    }
     setSubmitting(true);
     setMessage(undefined);
     const r = await submitOnboarding(
@@ -240,18 +247,12 @@ export function OnboardingWizard() {
   };
 
   const titles: Record<number, [string, string]> = {
-    1: [
-      "Which service are you starting with?",
-      "Pick the main service to launch first — you can add more later.",
+    1: ["Which service are you starting with?", "Pick the main one — you can add more later."],
+    2: ["About you", "So we know who we're working with and how to reach you."],
+    3: [
+      "What are you aiming for?",
+      "A few quick answers. Anything else, we'll cover on the kickoff call.",
     ],
-    2: ["Tell us about your business", "The basics, so we know who we're working with."],
-    3: ["What does success look like?", "Your goals and budget shape the whole plan."],
-    4: [
-      `${service?.label ?? "Service"} details`,
-      "A few specifics so we can hit the ground running.",
-    ],
-    5: ["Files and access", "Upload anything useful — every upload is optional."],
-    6: ["Review and submit", "Check your answers, then send them to our team."],
   };
 
   return (
@@ -296,7 +297,7 @@ export function OnboardingWizard() {
 
       {/* Step indicator + progress */}
       <nav aria-label="Onboarding progress">
-        <ol className="grid grid-cols-6 gap-2">
+        <ol className="grid grid-cols-3 gap-2">
           {STEPS.map((label, i) => {
             const n = i + 1;
             const reachable = n <= draft.maxStep && n !== step;
@@ -315,7 +316,7 @@ export function OnboardingWizard() {
                 </span>
                 <span
                   className={cn(
-                    "hidden text-[11px] font-semibold tracking-[0.1em] uppercase sm:block",
+                    "text-[11px] font-semibold tracking-[0.1em] uppercase",
                     n === step ? "text-foreground" : "text-muted-foreground",
                   )}
                 >
@@ -427,119 +428,46 @@ export function OnboardingWizard() {
             </fieldset>
           )}
 
-          {step >= 2 && step <= 4 && (
-            <div className="grid gap-6 sm:grid-cols-2">
-              {fieldsFor[step as 2 | 3 | 4].fields.map((f) => {
-                const key = fieldsFor[step as 2 | 3 | 4].key;
-                return (
-                  <FieldInput
-                    key={`${key}.${f.name}`}
-                    field={f}
-                    value={draft[key][f.name]}
-                    error={errors[f.name]}
-                    onChange={(v) => setValue(key, f.name, v)}
-                  />
-                );
-              })}
-            </div>
-          )}
-
-          {step === 5 && service && (
+          {(step === 2 || step === 3) && (
             <div className="space-y-10">
-              <div className="grid gap-8 lg:grid-cols-2">
-                {service.uploads.map((u) => (
-                  <FileDrop
-                    key={u.slot}
-                    slot={u}
-                    submissionId={draft.submissionId}
-                    files={draft.files.filter((f) => f.slot === u.slot)}
-                    totalFiles={draft.files.length}
-                    onUploaded={(f) => setDraft((d) => d && { ...d, files: [...d.files, f] })}
-                    onRemove={(path) =>
-                      setDraft((d) => d && { ...d, files: d.files.filter((f) => f.path !== path) })
-                    }
-                    onBusyChange={onBusyChange}
-                  />
-                ))}
-              </div>
-
-              <div className="bg-background/40 rounded-2xl border p-6">
-                <h3 className="flex items-center gap-2 text-lg font-semibold">
-                  <KeyRound className="text-brand size-5" aria-hidden /> Give us access — never
-                  passwords
-                </h3>
-                <p className="text-muted-foreground mt-2 text-sm">
-                  Please don&apos;t send passwords. Instead, invite{" "}
-                  <span className="text-foreground font-medium">{site.contact.email}</span> as a
-                  user on each platform you use. You can do this now or after your kickoff call.
-                </p>
-                <ul className="mt-5 space-y-4">
-                  {service.access.map((a) => (
-                    <li key={a.platform} className="flex gap-3">
-                      <Check className="text-brand mt-0.5 size-4 shrink-0" aria-hidden />
-                      <span>
-                        <span className="block font-medium">{a.platform}</span>
-                        <span className="text-muted-foreground text-sm">{a.how}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-
-          {step === 6 && service && (
-            <div className="space-y-6">
-              {(
-                [
-                  [1, "Service", [{ label: "Primary service", value: service.label }]],
-                  ...([2, 3, 4] as const).map((n) => [
-                    n,
-                    STEPS[n - 1] === "Details" ? `${service.label} details` : STEPS[n - 1],
-                    fieldsFor[n].fields
-                      .map((f) => ({
-                        label: f.label,
-                        value: display(draft[fieldsFor[n].key][f.name]),
-                      }))
-                      .filter((x) => x.value),
-                  ]),
-                  [
-                    5,
-                    "Files",
-                    draft.files.map((f) => ({
-                      label: f.slot.replace(/_/g, " "),
-                      value: f.fileName,
-                    })),
-                  ],
-                ] as [number, string, { label: string; value: string }[]][]
-              ).map(([n, title, rows]) => (
-                <section key={n} className="bg-background/40 rounded-2xl border p-5 sm:p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-lg font-semibold">{title}</h3>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => goTo(n)}
-                      aria-label={`Edit ${title}`}
-                    >
-                      <Pencil /> Edit
-                    </Button>
+              {groups[step].map((g) => (
+                <div key={g.key}>
+                  {g.title && <h3 className="mb-5 text-lg font-semibold">{g.title}</h3>}
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    {g.fields.map((f) => (
+                      <FieldInput
+                        key={`${g.key}.${f.name}`}
+                        field={f}
+                        value={draft[g.key][f.name]}
+                        error={errors[f.name]}
+                        onChange={(v) => setValue(g.key, f.name, v)}
+                      />
+                    ))}
                   </div>
-                  {rows.length ? (
-                    <dl className="mt-4 grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-                      {rows.map((r) => (
-                        <div key={r.label + r.value} className="contents">
-                          <dt className="text-muted-foreground">{r.label}</dt>
-                          <dd className="break-words whitespace-pre-wrap">{r.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  ) : (
-                    <p className="text-muted-foreground mt-3 text-sm">Nothing added.</p>
-                  )}
-                </section>
+                </div>
               ))}
-              {turnstileWidget}
+
+              {step === 3 && (
+                <>
+                  {onboardingUploads.map((u) => (
+                    <FileDrop
+                      key={u.slot}
+                      slot={u}
+                      submissionId={draft.submissionId}
+                      files={draft.files.filter((f) => f.slot === u.slot)}
+                      totalFiles={draft.files.length}
+                      onUploaded={(f) => setDraft((d) => d && { ...d, files: [...d.files, f] })}
+                      onRemove={(path) =>
+                        setDraft(
+                          (d) => d && { ...d, files: d.files.filter((f) => f.path !== path) },
+                        )
+                      }
+                      onBusyChange={onBusyChange}
+                    />
+                  ))}
+                  {turnstileWidget}
+                </>
+              )}
             </div>
           )}
         </div>
@@ -556,33 +484,25 @@ export function OnboardingWizard() {
         >
           <ArrowLeft /> Back
         </Button>
-        {step < 6 ? (
+        {step < STEPS.length ? (
+          <Button type="button" variant="brand" size="xl" onClick={next}>
+            Continue <ArrowRight />
+          </Button>
+        ) : (
           <Button
             type="button"
             variant="brand"
             size="xl"
-            onClick={next}
-            disabled={step === 5 && uploading}
+            onClick={submit}
+            disabled={submitting || uploading}
           >
-            {step === 5 && uploading ? (
-              <>
-                <Loader2 className="animate-spin" /> Uploading…
-              </>
-            ) : (
-              <>
-                Continue <ArrowRight />
-              </>
-            )}
-          </Button>
-        ) : (
-          <Button type="button" variant="brand" size="xl" onClick={submit} disabled={submitting}>
             {submitting ? (
               <>
                 <Loader2 className="animate-spin" /> Submitting…
               </>
             ) : (
               <>
-                Submit onboarding <ArrowRight />
+                Submit <ArrowRight />
               </>
             )}
           </Button>
@@ -596,8 +516,8 @@ export function OnboardingWizard() {
               Switch to {getOnboardingService(switchTo ?? undefined)?.label}?
             </DialogTitle>
             <DialogDescription>
-              Your {service?.label} details and uploaded files will be cleared. Business and goals
-              answers are kept.
+              Your answers to the {service?.label} questions will be cleared. Everything else,
+              including uploaded files, is kept.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -607,14 +527,8 @@ export function OnboardingWizard() {
             <Button
               variant="brand"
               onClick={() => {
-                // New service = new step-4 questions, so steps after Goals must be redone.
-                setDraft({
-                  ...draft,
-                  service: switchTo!,
-                  details: {},
-                  files: [],
-                  maxStep: Math.min(draft.maxStep, 3),
-                });
+                // Only the service's own questions change; files and other answers stay.
+                setDraft({ ...draft, service: switchTo!, details: {} });
                 setSwitchTo(null);
               }}
             >
