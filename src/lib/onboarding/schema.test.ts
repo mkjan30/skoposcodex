@@ -75,6 +75,12 @@ describe("validateStep", () => {
     expect(r.ok && "injected" in r.data).toBe(false);
   });
 
+  it("normalises US phone numbers", () => {
+    const r = validateStep(fields, { ...valid, phone: "+1 941 374 8014" });
+    expect(r.ok && r.data.phone).toBe("(941) 374-8014");
+    expect(validateStep(fields, { ...valid, phone: "94137" }).ok).toBe(false);
+  });
+
   it("rejects control characters in single-line fields", () => {
     expect(validateStep(fields, { ...valid, businessName: "Acme\u0000" }).ok).toBe(false);
   });

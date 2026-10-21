@@ -10,6 +10,7 @@ import { fieldClass, selectArrow, selectClass } from "@/components/form-styles";
 import { useTurnstile } from "@/components/turnstile";
 import { Button } from "@/components/ui/button";
 import { contactServices, type ContactField } from "@/lib/contact-services";
+import { formatUsPhone } from "@/lib/phone";
 import { cn } from "@/lib/utils";
 
 export function ContactForm({ defaultService }: { defaultService?: string }) {
@@ -100,6 +101,10 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
               {...field("phone")}
               type="tel"
               autoComplete="tel"
+              inputMode="tel"
+              placeholder="(555) 123-4567"
+              // Uncontrolled input: format the DOM value in place as the user types.
+              onInput={(e) => (e.currentTarget.value = formatUsPhone(e.currentTarget.value))}
               className={cn(fieldClass, "h-12")}
             />
           </Field>

@@ -40,6 +40,11 @@ describe("contactSchema", () => {
     );
   });
 
+  it("stores US phone numbers as (555) 123-4567 and rejects partial ones", () => {
+    expect(contactSchema.parse({ ...valid, phone: "941-374-8014" }).phone).toBe("(941) 374-8014");
+    expect(contactSchema.safeParse({ ...valid, phone: "374-8014" }).success).toBe(false);
+  });
+
   it("caps lengths", () => {
     expect(contactSchema.safeParse({ ...valid, message: "x".repeat(5001) }).success).toBe(false);
   });

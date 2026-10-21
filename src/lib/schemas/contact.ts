@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { serviceValues } from "@/lib/contact-services";
+import { normalizeUsPhone, US_PHONE_MESSAGE } from "@/lib/phone";
 
 export { contactServices, serviceFromSlug, type ContactField } from "@/lib/contact-services";
 
@@ -30,10 +31,9 @@ export const contactSchema = z.object({
   email: text(254)
     .pipe(z.email("Please enter a valid email address."))
     .transform((s) => s.toLowerCase()),
-  phone: optional(40).refine(
-    (s) => !s || /^[+()\-.\s\d]{7,40}$/.test(s),
-    "Please enter a valid phone number.",
-  ),
+  phone: optional(40)
+    .refine((s) => !s || normalizeUsPhone(s) !== null, US_PHONE_MESSAGE)
+    .transform((s) => (s ? (normalizeUsPhone(s) ?? s) : s)), // stored as "(555) 123-4567"
   company: optional(160),
   service: z.enum(serviceValues, { error: "Please choose a service." }),
   message: text(5000, { multiline: true }).pipe(

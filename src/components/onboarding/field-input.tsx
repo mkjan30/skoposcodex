@@ -4,6 +4,7 @@ import { AlertCircle, Check } from "lucide-react";
 
 import { fieldClass, selectArrow, selectClass } from "@/components/form-styles";
 import type { Field, FieldValue } from "@/lib/onboarding/types";
+import { formatUsPhone } from "@/lib/phone";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -123,11 +124,14 @@ export function FieldInput({ field: f, value, error, onChange }: Props) {
       <input
         {...common}
         type={f.type === "url" ? "text" : f.type}
-        inputMode={f.type === "url" ? "url" : undefined}
+        inputMode={f.type === "url" ? "url" : f.type === "tel" ? "tel" : undefined}
         autoComplete={AUTOCOMPLETE[f.name] ?? "off"}
         value={str}
         placeholder={f.placeholder}
-        onChange={(e) => onChange(e.target.value)}
+        // US phone numbers format as you type: (555) 123-4567
+        onChange={(e) =>
+          onChange(f.type === "tel" ? formatUsPhone(e.target.value) : e.target.value)
+        }
         className={cn(fieldClass, "h-12")}
       />
     );

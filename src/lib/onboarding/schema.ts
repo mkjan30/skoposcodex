@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { normalizeUsPhone, US_PHONE_MESSAGE } from "@/lib/phone";
+
 import type { Field, FieldValue, ServiceKey, StepValues, UploadedFile } from "./types";
 
 const MAX_LEN: Record<Field["type"], number> = {
@@ -45,15 +47,14 @@ function fieldSchema(f: Field): z.ZodType<FieldValue> {
       "Contains invalid characters.",
     )
     .transform((v) => (f.type === "url" ? withScheme(v) : v))
+    // US numbers are stored as "(555) 123-4567"; anything unparseable is left as-is and rejected below.
+    .transform((v) => (f.type === "tel" && v ? (normalizeUsPhone(v) ?? v) : v))
     .refine((v) => !f.required || v.length > 0, "This field is required.")
     .refine(
       (v) => !v || f.type !== "email" || z.email().safeParse(v).success,
       "Enter a valid email.",
     )
-    .refine(
-      (v) => !v || f.type !== "tel" || /^[+()\-.\s\d]{7,40}$/.test(v),
-      "Enter a valid phone number.",
-    )
+    .refine((v) => !v || f.type !== "tel" || normalizeUsPhone(v) !== null, US_PHONE_MESSAGE)
     .refine(
       (v) => !v || f.type !== "url" || z.url({ protocol: /^https?$/ }).safeParse(v).success,
       "Enter a valid web address.",
