@@ -103,6 +103,16 @@
   @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6;
 }
 
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-ticker {
+  animation: ticker 40s linear infinite;
+}
+
 @utility text-gradient {
   @apply from-brand to-brand-strong bg-gradient-to-r bg-clip-text text-transparent;
 }

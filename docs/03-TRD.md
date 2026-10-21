@@ -12,24 +12,24 @@ We keep the same frontend stack so the replica is faithful, and add a small back
 
 ## 2. Stack
 
-| Layer           | Choice                                                                           | Why                                                |
-| --------------- | -------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Framework       | **Next.js 15** (App Router, TypeScript, React 19)                                | Matches reference; SSG + server actions            |
-| Styling         | **Tailwind CSS v4** + **shadcn/ui**                                              | Matches reference tokens/components                |
-| Icons           | `lucide-react`                                                                   | Matches reference                                  |
-| Motion          | `motion` (Framer Motion)                                                         | Counters, reveals, ticker; respects reduced motion |
-| Forms           | `react-hook-form` + `zod`                                                        | One schema shared by client and server             |
-| Database        | **Supabase Postgres**                                                            | Managed Postgres + auth + storage in one           |
-| File storage    | Supabase Storage (private bucket, signed upload/download URLs)                   | Direct-from-browser uploads                        |
-| Auth (admin)    | Supabase Auth magic link + allow-list                                            | No passwords to manage                             |
-| Email           | **Resend** + `react-email`                                                       | Transactional email                                |
-| Spam            | Cloudflare Turnstile + honeypot + rate limit (Upstash Redis or Postgres counter) |                                                    |
-| Analytics       | Vercel Analytics + GA4 (consent-gated)                                           |                                                    |
-| Hosting         | **Vercel** (prod from `main`, previews per PR)                                   | Native Next.js                                     |
-| Repo            | GitHub `mkjan30/skoposcodex`                                                     |                                                    |
-| CI              | GitHub Actions: lint, typecheck, test, build                                     |                                                    |
-| Testing         | Vitest (units), Playwright (e2e, a11y via axe)                                   |                                                    |
-| Package manager | pnpm                                                                             |                                                    |
+| Layer           | Choice                                                                           | Why                                                                  |
+| --------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Framework       | **Next.js 15** (App Router, TypeScript, React 19)                                | Matches reference; SSG + server actions                              |
+| Styling         | **Tailwind CSS v4** + **shadcn/ui**                                              | Matches reference tokens/components                                  |
+| Icons           | `lucide-react`                                                                   | Matches reference                                                    |
+| Motion          | CSS transitions + `IntersectionObserver` (`useInViewOnce`)                       | No animation library: keeps shared JS small; respects reduced motion |
+| Forms           | `react-hook-form` + `zod`                                                        | One schema shared by client and server                               |
+| Database        | **Supabase Postgres**                                                            | Managed Postgres + auth + storage in one                             |
+| File storage    | Supabase Storage (private bucket, signed upload/download URLs)                   | Direct-from-browser uploads                                          |
+| Auth (admin)    | Supabase Auth magic link + allow-list                                            | No passwords to manage                                               |
+| Email           | **Resend** + `react-email`                                                       | Transactional email                                                  |
+| Spam            | Cloudflare Turnstile + honeypot + rate limit (Upstash Redis or Postgres counter) |                                                                      |
+| Analytics       | Vercel Analytics + GA4 (consent-gated)                                           |                                                                      |
+| Hosting         | **Vercel** (prod from `main`, previews per PR)                                   | Native Next.js                                                       |
+| Repo            | GitHub `mkjan30/skoposcodex`                                                     |                                                                      |
+| CI              | GitHub Actions: lint, typecheck, test, build                                     |                                                                      |
+| Testing         | Vitest (units), Playwright (e2e, a11y via axe)                                   |                                                                      |
+| Package manager | pnpm                                                                             |                                                                      |
 
 ## 3. Architecture
 

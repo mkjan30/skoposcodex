@@ -30,8 +30,10 @@
 
 ## Phase 2 — Shared sections (day 3–4)
 
-- [ ] Section primitives: `SectionHeader` (eyebrow/H2/sub), `CtaBand`, `FaqAccordion`, `StatCounter` (SSR value + count-up), `StepCard`, `ServiceCard`, `Ticker`, `ComparisonTable`, `TestimonialCard`, `DashboardCard`
-- [ ] Reveal-on-scroll wrapper with reduced-motion support
+- [x] Section primitives: `SectionHeader` (eyebrow/H2/sub), `CtaBand`, `FaqAccordion`, `StatCounter` (SSR value + count-up), `StepCard`, `ServiceCard`, `Ticker`, `ComparisonTable`, `TestimonialCard`, `DashboardCard`
+- [x] Reveal-on-scroll wrapper with reduced-motion support
+- [x] Dev-only catalogue at `/dev/sections` (404 in production)
+- [x] Vitest set up (`pnpm test`, runs in CI)
 
 **Done when:** each section renders in isolation with sample content.
 
