@@ -13,7 +13,12 @@ export const site = {
   tagline: "Where strategy meets digital growth.",
   description:
     "A digital marketing agency building high-performance growth systems — Local SEO, PPC, branding, website design and funnels — that turn traffic into leads and revenue.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // Server-side only. On Vercel, VERCEL_PROJECT_PRODUCTION_URL is the custom domain once attached.
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
   // Hidden in the footer until real profile URLs exist (PRD §7).
   socials: [] as { label: string; href: string }[],
   // TODO(launch): fill in real details; the contact page shows only the ones that are set.
