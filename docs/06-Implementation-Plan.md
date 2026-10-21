@@ -83,7 +83,7 @@ Removed: review step, address/team/history questions, most service-specific ques
 - [x] Wizard: step indicator, progress, Back/Continue (sticky on mobile), validation with focus on first error, autosave/resume (`onboard-draft-v2`), service-switch confirm
 - [x] `api/upload-url` (signed upload URLs, allow-list, 25 MB, rate-limited) + FileDrop with progress/retry
 - [x] Idempotent submit with Turnstile; admin email with all answers, client receipt with access steps (invite info@skoposcodex.com — never passwords)
-- [ ] ⏳ Live test from a real browser: upload a file and submit (Turnstile blocks automated browsers; uploads need production Supabase)
+- [x] Live test from a real browser (2026-10-22): onboarding submitted successfully; US phone format confirmed after hard refresh
 
 **Done when:** each service path can be completed on mobile and desktop, the file lands in the private bucket, row + file appear in DB.
 
