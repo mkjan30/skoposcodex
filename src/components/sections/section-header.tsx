@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/sections/reveal";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
   className?: string;
 };
 
+// Dot + small label, white-fade heading, muted paragraph; the block rises in on scroll.
 export function SectionHeader({
   eyebrow,
   title,
@@ -18,24 +20,35 @@ export function SectionHeader({
   as: Heading = "h2",
   className,
 }: Props) {
+  const center = align === "center";
   return (
-    <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}>
+    <Reveal className={cn("max-w-3xl", center && "mx-auto text-center", className)}>
       {eyebrow && (
-        <p className="text-brand text-xs font-semibold tracking-[0.12em] uppercase">{eyebrow}</p>
+        <p className={cn("flex items-center gap-2", center && "justify-center")}>
+          <span className="bg-brand size-1.5 rounded-full" aria-hidden />
+          <span className="section-label">{eyebrow}</span>
+        </p>
       )}
       <Heading
         className={cn(
-          "mt-4 font-bold",
+          "text-heading mt-5 font-bold tracking-tight",
           Heading === "h1"
             ? "text-5xl leading-[1.05] sm:text-7xl"
-            : "text-3xl leading-tight sm:text-5xl",
+            : "text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.1]",
         )}
       >
         {title}
       </Heading>
       {description && (
-        <p className="text-muted-foreground mt-5 text-base sm:text-lg">{description}</p>
+        <p
+          className={cn(
+            "text-muted-foreground mt-5 text-lg",
+            center ? "mx-auto max-w-2xl" : "max-w-xl",
+          )}
+        >
+          {description}
+        </p>
       )}
-    </div>
+    </Reveal>
   );
 }

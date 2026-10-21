@@ -1,3 +1,5 @@
+import { MapPin, Phone, Star, TrendingUp } from "lucide-react";
+
 export const home = {
   meta: {
     title: "Digital Marketing Agency for Local Businesses",
@@ -5,7 +7,7 @@ export const home = {
       "Skopos Codex builds marketing systems that turn traffic into leads and revenue: Local SEO, PPC, branding, website design and funnels for growing businesses.",
   },
   hero: {
-    badge: "A five-step growth process",
+    badge: "Digital growth agency",
     title: "Where strategy meets",
     highlight: "digital growth.",
     description:
@@ -14,10 +16,10 @@ export const home = {
   // TODO(launch): sample dashboard figures; replace with a real (anonymised) client snapshot.
   dashboard: {
     kpis: [
-      { label: "Organic traffic", value: "+327%", delta: "vs last year" },
-      { label: "Calls this month", value: "1,284", delta: "+18% MoM" },
-      { label: "Map pack rank", value: "#1", delta: "+4 spots" },
-      { label: "Avg. review", value: "4.9", delta: "212 reviews" },
+      { icon: TrendingUp, label: "Organic traffic", value: "+327%", delta: "vs last year" },
+      { icon: Phone, label: "Calls this month", value: "1,284", delta: "+18% MoM" },
+      { icon: MapPin, label: "Map pack rank", value: "#1", delta: "+4 spots" },
+      { icon: Star, label: "Avg. review", value: "4.9", delta: "212 reviews" },
     ],
     keywords: [
       { keyword: "plumber near me", rank: 1, change: 8 },
@@ -25,10 +27,14 @@ export const home = {
       { keyword: "water heater repair", rank: 1, change: 5 },
     ],
   },
-  statement: {
-    lines: ["We don't guess.", "We don't run random campaigns."],
-    highlight: "We build growth systems for your market.",
+  // Pinned scroll scenes under the hero.
+  engine: ["We engineer growth.", "Every channel. One system.", "Built to compound."],
+  noGuesswork: {
+    lead: "We don't run random campaigns.",
+    big: "No guesswork.",
+    tail: "Just growth systems built for your market.",
   },
+  industriesTitle: { line1: "Powering local businesses", line2: "to own their market." },
   industries: [
     "Home Services",
     "HVAC & Plumbing",

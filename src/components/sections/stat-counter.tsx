@@ -6,12 +6,12 @@ import { useInViewOnce } from "@/hooks/use-in-view-once";
 import { formatStat, type Stat } from "@/lib/format-stat";
 import { cn } from "@/lib/utils";
 
-type Props = Stat & { label: string; className?: string };
+type Props = Stat & { label: string; className?: string; tone?: "brand" | "white" };
 
 const DURATION_MS = 1200;
 
 // Server HTML always carries the final value (fixes the reference site's "0%" bug); counting is an enhancement.
-export function StatCounter({ label, className, ...stat }: Props) {
+export function StatCounter({ label, className, tone = "brand", ...stat }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const state = useInViewOnce(ref, 0.4);
   const [shown, setShown] = useState(stat.value);
@@ -34,7 +34,12 @@ export function StatCounter({ label, className, ...stat }: Props) {
 
   return (
     <div ref={ref} className={cn("space-y-2", className)}>
-      <p className="font-heading text-gradient text-5xl font-bold tabular-nums sm:text-6xl">
+      <p
+        className={cn(
+          "font-heading text-5xl font-bold tabular-nums sm:text-6xl",
+          tone === "brand" ? "text-gradient" : "text-white",
+        )}
+      >
         <span aria-hidden>{formatStat({ ...stat, value: shown })}</span>
         <span className="sr-only">{final}</span>
       </p>

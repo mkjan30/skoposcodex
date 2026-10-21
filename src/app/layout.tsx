@@ -3,6 +3,7 @@ import { Exo, Inter } from "next/font/google";
 
 import { JsonLd } from "@/components/seo/json-ld";
 import { site } from "@/content/site";
+import { preloaderSkipScript } from "@/lib/preloader";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
@@ -35,7 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${exo.variable}`}>
+    <html lang="en" className={`${inter.variable} ${exo.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: preloaderSkipScript }} />
+      </head>
       <body className="antialiased">
         <JsonLd data={organizationLd} />
         {children}

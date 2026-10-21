@@ -19,9 +19,9 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         brand:
-          "bg-gradient-to-r from-brand to-brand-strong font-semibold text-primary-foreground hover:brightness-110 [&_svg]:transition-transform hover:[&_svg]:translate-x-1",
+          "bg-gradient-to-r from-brand to-brand-strong font-semibold text-primary-foreground transition-[translate,scale,box-shadow] duration-250 ease-[cubic-bezier(.25,.46,.45,.94)] hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-[0_8px_28px_-6px_rgb(25_227_255/0.45)] active:translate-y-0 active:scale-[.99] [&_svg]:transition-transform hover:[&_svg]:translate-x-1",
         "brand-outline":
-          "border-white/20 bg-transparent font-semibold text-foreground hover:border-white/40 hover:bg-white/5",
+          "border-white/20 bg-white/[0.02] font-semibold text-foreground transition-[translate,background-color,border-color,box-shadow] duration-250 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10 hover:shadow-[0_8px_24px_rgb(0_0_0/0.35)] active:translate-y-0",
       },
       size: {
         default:

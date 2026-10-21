@@ -24,36 +24,43 @@ export type Service = {
   slug: string;
   title: string;
   summary: string;
+  /** Short label shown as a pill on service cards. */
+  tag: string;
   icon: LucideIcon;
 };
 
 export const services: Service[] = [
   {
     slug: "local-seo",
+    tag: "Search visibility",
     title: "Local SEO",
     summary: "Own the map pack and local search in your service area.",
     icon: MapPin,
   },
   {
     slug: "ppc",
+    tag: "Paid growth",
     title: "PPC Advertising",
     summary: "Paid campaigns tuned for cost per lead, not clicks.",
     icon: MousePointerClick,
   },
   {
     slug: "branding",
+    tag: "Brand identity",
     title: "Branding",
     summary: "Identity and messaging that make you the obvious choice.",
     icon: Palette,
   },
   {
     slug: "website-design",
+    tag: "Web design",
     title: "Website Design",
     summary: "Fast, conversion-first websites built to rank.",
     icon: MonitorSmartphone,
   },
   {
     slug: "funnel-building",
+    tag: "Automation",
     title: "Funnel Building",
     summary: "Automated lead systems that capture and nurture.",
     icon: Funnel,

@@ -62,7 +62,7 @@ Contrast checks (WCAG): `#19E3FF` on `#050816` 12.8:1 ✅; `#2B8CFF` vs `#050816
 | **Badge / pill**       | Small rounded pill with sparkle icon, links to `/process`                                                                                 |
 | **Dashboard card**     | Surface panel: 4 KPI tiles (value, label, ▲ delta in green), keyword table (keyword, rank, ±change), faux sparkline                       |
 | **Service card**       | Icon in cyan-tinted square, title, 2-line copy, "Learn more →"                                                                            |
-| **Industries ticker**  | Infinite horizontal marquee, pause on hover, static wrap for reduced motion                                                               |
+| **Industries marquee** | Two rows of pill chips, opposite directions, pause on hover, roll-on-hover labels; static wrap for reduced motion                         |
 | **Step card**          | Large outlined number (01–05), title, tagline, deliverables list with check icons, timeline chip                                          |
 | **Stat counter**       | Big number + label; SSR final value; count-up 1.2 s when 40 % in view                                                                     |
 | **Comparison table**   | Two columns: "Typical agency" (✕, muted) vs "Skopos Codex" (✓, accent), 6 rows; stacks on mobile                                          |
@@ -75,12 +75,24 @@ Contrast checks (WCAG): `#19E3FF` on `#050816` 12.8:1 ✅; `#2B8CFF` vs `#050816
 | **Selectable card**    | Used for service choice / multi-choice: border highlight + check when selected; keyboard = radio/checkbox semantics                       |
 | **File drop**          | Dashed zone, click or drag, per-file progress, remove, retry                                                                              |
 
-## 6. Motion
+## 6. Motion (modelled on rankesprit.com, in our palette)
 
-- Section reveal: fade + 16 px rise, 400 ms, stagger 60 ms, once.
-- Hover: 150 ms ease-out.
-- Ticker: 40 s loop.
-- Everything disabled or reduced under `prefers-reduced-motion`.
+Section structure and animation follow the reference home page; only the colours differ (cyan → blue instead of orange → purple). All keyframes live under `prefers-reduced-motion: no-preference` in `globals.css`; reduced motion and no-JS always get the final state.
+
+| Pattern                     | Where                   | Spec                                                                                                                                                                                                                                   |
+| --------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Preloader                   | First visit per session | Logo in ring, 0→100 % counter + progress line (1.1 s), fade out. Hidden for reduced motion, repeat visits (inline script sets `no-preloader`) and after 2.5 s without JS. Page-load entrances wait (`html.preloading`) until it lifts. |
+| Page-load entrances         | Header, hero            | `en-wipe` (clip-path line wipe, .95 s), `en-lift` / `en-lift-line` (rise 9 px, .6–.8 s), `en-settle`; easing `cubic-bezier(.16,1,.3,1)` / `(.25,.8,.35,1)`; staggered with `animation-delay` (.12 s → 1.08 s).                         |
+| Scroll reveal               | Section headers, cards  | `Reveal`: rise 30 px + fade, 700 ms, line easing, stagger 80 ms, once.                                                                                                                                                                 |
+| Hero glow                   | Hero, CTA               | `.hero-glow`: two radial glows (deep blue + cyan) breathing 7 s / 9 s.                                                                                                                                                                 |
+| Glass pill                  | Hero highlight          | Frosted, −3° tilt, cyan glow shadow.                                                                                                                                                                                                   |
+| Pinned scene — engine       | Home, after hero        | 320 vh, sticky: ring grows, logo tile scales/turns, triangle swings in, dash trail runs into the tile, three phrases take turns. Driven by one CSS var `--p` (scroll progress) via `calc()`.                                           |
+| Pinned scene — no guesswork | Home, light section     | 240 vh on `#F6F5FB`: lead brightens, "No guesswork." un-blurs (14 px → 0) and scales .88 → 1, tail fades in. Big line uses logo deep blue `#0A6CFF` → `#2B8CFF` for contrast on light.                                                 |
+| Cursor glow cards           | Service cards           | `.react-card`: 1 px border + wash following the cursor (`--mx/--my`), lift 2 px on hover.                                                                                                                                              |
+| Marquee + roll chips        | Industries              | Two rows, opposite directions, 40 s loop, pause on hover; chip label rolls up to a cyan copy.                                                                                                                                          |
+| Timeline                    | Home process            | Sticky intro left; step icons fill with the brand gradient and connector lines grow as each step scrolls into view.                                                                                                                    |
+| Buttons                     | Everywhere              | Hover lift −2 px + scale 1.02 + glow, 250 ms.                                                                                                                                                                                          |
+| Counters                    | Results                 | Server-rendered final value, count-up on view.                                                                                                                                                                                         |
 
 ## 7. Imagery & iconography
 

@@ -28,9 +28,9 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
-export function Logo({ className }: { className?: string }) {
+export function Logo({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <Link href="/" className={cn("flex items-center gap-2.5 text-white", className)}>
+    <Link href="/" className={cn("flex items-center gap-2.5 text-white", className)} style={style}>
       <LogoMark className="h-7 w-auto" />
       {/* The visible wordmark is the link's accessible name ("Skopos Codex"). */}
       <span className={cn(montserrat.className, "flex flex-col leading-none uppercase")}>

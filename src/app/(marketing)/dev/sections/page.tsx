@@ -11,7 +11,7 @@ import { ServiceCard } from "@/components/sections/service-card";
 import { StatCounter } from "@/components/sections/stat-counter";
 import { StepCard } from "@/components/sections/step-card";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
-import { Ticker } from "@/components/sections/ticker";
+import { IndustriesMarquee } from "@/components/sections/industries-marquee";
 import { services } from "@/content/site";
 
 export const metadata: Metadata = { title: "Section preview", robots: { index: false } };
@@ -48,8 +48,7 @@ export default function SectionsPreviewPage() {
         />
       </section>
 
-      <Ticker
-        label="Industries we serve"
+      <IndustriesMarquee
         items={[
           "Home Services",
           "HVAC & Plumbing",
