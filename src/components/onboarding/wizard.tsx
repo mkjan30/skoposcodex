@@ -153,11 +153,25 @@ export function OnboardingWizard() {
       { key: "goals", fields: goalsFields, title: "Goals and budget" },
     ],
   };
+  // Validates a step; when it passes, writes the cleaned values back (phone as
+  // "(555) 123-4567", website with https://) so the form shows what will be saved.
   const validate = (n: 2 | 3) => {
     const errs: Record<string, string> = {};
+    const cleaned: Partial<Record<StepKey, StepValues>> = {};
     for (const g of groups[n]) {
       const r = validateStep(g.fields, draft[g.key]);
-      if (!r.ok) Object.assign(errs, r.errors);
+      if (r.ok) cleaned[g.key] = r.data;
+      else Object.assign(errs, r.errors);
+    }
+    if (!Object.keys(errs).length) {
+      setDraft((d) => {
+        if (!d) return d;
+        const next = { ...d };
+        for (const [k, v] of Object.entries(cleaned) as [StepKey, StepValues][]) {
+          next[k] = { ...d[k], ...v };
+        }
+        return next;
+      });
     }
     return errs;
   };

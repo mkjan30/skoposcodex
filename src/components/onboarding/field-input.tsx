@@ -132,6 +132,8 @@ export function FieldInput({ field: f, value, error, onChange }: Props) {
         onChange={(e) =>
           onChange(f.type === "tel" ? formatUsPhone(e.target.value) : e.target.value)
         }
+        // Autofill/password managers can fill without keystrokes; format on blur too.
+        onBlur={f.type === "tel" ? (e) => onChange(formatUsPhone(e.target.value)) : undefined}
         className={cn(fieldClass, "h-12")}
       />
     );

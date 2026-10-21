@@ -105,6 +105,8 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
               placeholder="(555) 123-4567"
               // Uncontrolled input: format the DOM value in place as the user types.
               onInput={(e) => (e.currentTarget.value = formatUsPhone(e.currentTarget.value))}
+              // Autofill/password managers can fill without input events; format on blur too.
+              onBlur={(e) => (e.currentTarget.value = formatUsPhone(e.currentTarget.value))}
               className={cn(fieldClass, "h-12")}
             />
           </Field>
