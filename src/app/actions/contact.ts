@@ -8,6 +8,7 @@ import { adminLeadEmail, leadConfirmationEmail } from "@/lib/emails/contact";
 import { contactFields, type ContactField } from "@/lib/contact-services";
 import { contactSchema } from "@/lib/schemas/contact";
 import { clientIp, hashIp, verifyTurnstile, withinRateLimit } from "@/lib/security";
+import { isSalesPitch } from "@/lib/spam";
 import { createAdminClient } from "@/lib/supabase/server";
 
 const GENERIC_ERROR =
@@ -55,6 +56,9 @@ export async function submitContact(prev: ContactState, formData: FormData): Pro
         .map(([k, v]) => [k, v.slice(0, 200)]),
     );
 
+    // Cold sales pitches are kept (status "spam", reviewable in Supabase) but trigger no emails.
+    const spam = isSalesPitch(lead.message);
+
     const { data, error } = await createAdminClient()
       .from("leads")
       .insert({
@@ -68,10 +72,12 @@ export async function submitContact(prev: ContactState, formData: FormData): Pro
         utm,
         ip_hash: ipHash,
         user_agent: (await headers()).get("user-agent")?.slice(0, 500) ?? null,
+        ...(spam && { status: "spam" as const }),
       })
       .select("id")
       .single();
     if (error) throw error;
+    if (spam) return { status: "success", firstName: lead.fullName.split(/\s+/)[0] };
 
     // The lead is saved; email problems are logged but never fail the submission (TRD §6).
     const adminTo = process.env.EMAIL_ADMIN_TO;
