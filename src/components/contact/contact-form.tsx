@@ -2,60 +2,31 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
-import Script from "next/script";
 import { AlertCircle, ArrowRight, CalendarClock, CheckCircle2, Loader2 } from "lucide-react";
 
 import { submitContact } from "@/app/actions/contact";
 import { initialContactState } from "@/app/actions/contact-state";
+import { fieldClass, selectArrow, selectClass } from "@/components/form-styles";
+import { useTurnstile } from "@/components/turnstile";
 import { Button } from "@/components/ui/button";
 import { contactServices, type ContactField } from "@/lib/contact-services";
 import { cn } from "@/lib/utils";
-
-declare global {
-  interface Window {
-    turnstile?: {
-      render: (el: HTMLElement, opts: { sitekey: string; theme: "dark" }) => string;
-      reset: (widget: string) => void;
-      remove: (widget: string) => void;
-    };
-  }
-}
-
-const fieldClass =
-  "bg-background/60 placeholder:text-muted-foreground/60 focus-visible:border-ring focus-visible:ring-ring/40 aria-invalid:border-destructive w-full rounded-lg border px-4 text-base outline-none focus-visible:ring-3";
 
 export function ContactForm({ defaultService }: { defaultService?: string }) {
   const [state, action] = useActionState(submitContact, initialContactState);
   const [sourcePage, setSourcePage] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLHeadingElement>(null);
-  const widgetRef = useRef<HTMLDivElement>(null);
-  const widgetId = useRef<string | null>(null);
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const { widget: turnstileWidget, reset: resetTurnstile } = useTurnstile();
 
-  // Explicit render so the widget also appears after client-side navigation back to this page.
-  const renderTurnstile = () => {
-    if (!siteKey || !window.turnstile || !widgetRef.current || widgetId.current) return;
-    widgetId.current = window.turnstile.render(widgetRef.current, {
-      sitekey: siteKey,
-      theme: "dark",
-    });
-  };
-
-  useEffect(() => {
-    setSourcePage(location.pathname + location.search);
-    return () => {
-      if (widgetId.current) window.turnstile?.remove(widgetId.current);
-      widgetId.current = null;
-    };
-  }, []);
+  useEffect(() => setSourcePage(location.pathname + location.search), []);
 
   useEffect(() => {
     if (state.status === "success") successRef.current?.focus();
     if (state.status !== "error") return;
-    if (widgetId.current) window.turnstile?.reset(widgetId.current); // tokens are single-use
+    resetTurnstile(); // tokens are single-use
     formRef.current?.querySelector<HTMLElement>("[aria-invalid=true], [role=alert]")?.focus();
-  }, [state]);
+  }, [state, resetTurnstile]);
 
   if (state.status === "success") {
     const booking = process.env.NEXT_PUBLIC_BOOKING_URL;
@@ -92,13 +63,6 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
 
   return (
     <form ref={formRef} action={action} noValidate className="space-y-5">
-      {siteKey && (
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-          onReady={renderTurnstile}
-        />
-      )}
-
       {state.message && (
         <p
           role="alert"
@@ -153,14 +117,8 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
             {...field("service")}
             defaultValue={v.service ?? defaultService ?? ""}
             required
-            className={cn(
-              fieldClass,
-              "h-12 appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat",
-            )}
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239fb3c8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-            }}
+            className={cn(fieldClass, selectClass)}
+            style={selectArrow}
           >
             <option value="" disabled>
               Select a service…
@@ -191,7 +149,7 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
       </div>
       <input type="hidden" name="sourcePage" value={sourcePage} />
 
-      {siteKey && <div ref={widgetRef} className="min-h-[65px]" />}
+      {turnstileWidget}
 
       <SubmitButton />
       <p className="text-muted-foreground text-sm">

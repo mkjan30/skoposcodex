@@ -91,7 +91,7 @@ create table onboarding_files (
   id             uuid primary key default gen_random_uuid(),
   submission_id  uuid not null references onboarding_submissions(id) on delete cascade,
   slot           text not null,              -- e.g. 'logo', 'brand_guidelines'
-  storage_path   text not null unique,       -- onboarding/{submission_id}/{slot}/{uuid}-{name}
+  storage_path   text not null unique,       -- {submission_id}/{slot}/{uuid}-{name} inside bucket onboarding-files
   file_name      text not null,
   mime_type      text not null,
   size_bytes     int  not null check (size_bytes <= 26214400), -- 25 MB

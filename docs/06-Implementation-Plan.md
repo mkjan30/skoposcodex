@@ -69,13 +69,16 @@ Tested locally without Supabase: field errors, focus management, input kept afte
 
 ## Phase 5 — Onboarding wizard (day 11–15)
 
-- [ ] `onboardingSchema` — shared steps + discriminated union for 5 services + tests
-- [ ] Wizard shell: step indicator, progress, Back/Continue, per-step validation, focus management
-- [ ] Field renderers driven by a per-service field config (labels, types, options, required)
-- [ ] localStorage autosave/resume; service-change confirm dialog
-- [ ] `api/upload-url` + FileDrop with progress/retry
-- [ ] Review step with Edit links; idempotent submit action; thank-you screen
-- [ ] Access-grant instructions in step 5 (no credentials)
+- [x] Field catalogue (`src/content/onboarding/`) drives UI, client validation and server validation from one config (`src/lib/onboarding/schema.ts`) + tests
+- [x] Wizard shell: step indicator (completed steps clickable), progress, Back/Continue (sticky on mobile), per-step validation, focus moves to first error / step heading
+- [x] Field renderers: text, email, tel, url, textarea, select, radio pills, checkbox pills (with max)
+- [x] localStorage autosave + "continue where I left off"; switching service confirms and clears service-specific answers/files
+- [x] `api/upload-url` (signed upload URLs, allow-list, 25 MB, rate-limited) + FileDrop with progress, retry, type/size/count checks
+- [x] Review step with Edit links; idempotent submit (client UUID, insert-ignore); thank-you screen; admin + client emails
+- [x] Access-grant instructions in step 5 (invite info@skoposcodex.com — never passwords)
+- [ ] ⏳ Live test from a real browser: upload a file and submit (Turnstile blocks automated browsers; uploads need production Supabase)
+
+Verified locally (no Supabase): validation and error focus on every step, review/edit/jump-back, resume after reload, service-switch dialog, upload type/size checks and graceful upload/submit failures. `/onboard` ships ~116 kB route JS (zod + catalogue); acceptable for a noindex page reached by link.
 
 **Done when:** each of the 5 service paths can be completed end-to-end on mobile and desktop, files land in the private bucket, row + files appear in DB.
 
