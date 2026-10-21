@@ -12,24 +12,24 @@ We keep the same frontend stack so the replica is faithful, and add a small back
 
 ## 2. Stack
 
-| Layer | Choice | Why |
-|-------|--------|-----|
-| Framework | **Next.js 15** (App Router, TypeScript, React 19) | Matches reference; SSG + server actions |
-| Styling | **Tailwind CSS v4** + **shadcn/ui** | Matches reference tokens/components |
-| Icons | `lucide-react` | Matches reference |
-| Motion | `motion` (Framer Motion) | Counters, reveals, ticker; respects reduced motion |
-| Forms | `react-hook-form` + `zod` | One schema shared by client and server |
-| Database | **Supabase Postgres** | Managed Postgres + auth + storage in one |
-| File storage | Supabase Storage (private bucket, signed upload/download URLs) | Direct-from-browser uploads |
-| Auth (admin) | Supabase Auth magic link + allow-list | No passwords to manage |
-| Email | **Resend** + `react-email` | Transactional email |
-| Spam | Cloudflare Turnstile + honeypot + rate limit (Upstash Redis or Postgres counter) | |
-| Analytics | Vercel Analytics + GA4 (consent-gated) | |
-| Hosting | **Vercel** (prod from `main`, previews per PR) | Native Next.js |
-| Repo | GitHub `mkjan30/skoposcodex` | |
-| CI | GitHub Actions: lint, typecheck, test, build | |
-| Testing | Vitest (units), Playwright (e2e, a11y via axe) | |
-| Package manager | pnpm | |
+| Layer           | Choice                                                                           | Why                                                |
+| --------------- | -------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Framework       | **Next.js 15** (App Router, TypeScript, React 19)                                | Matches reference; SSG + server actions            |
+| Styling         | **Tailwind CSS v4** + **shadcn/ui**                                              | Matches reference tokens/components                |
+| Icons           | `lucide-react`                                                                   | Matches reference                                  |
+| Motion          | `motion` (Framer Motion)                                                         | Counters, reveals, ticker; respects reduced motion |
+| Forms           | `react-hook-form` + `zod`                                                        | One schema shared by client and server             |
+| Database        | **Supabase Postgres**                                                            | Managed Postgres + auth + storage in one           |
+| File storage    | Supabase Storage (private bucket, signed upload/download URLs)                   | Direct-from-browser uploads                        |
+| Auth (admin)    | Supabase Auth magic link + allow-list                                            | No passwords to manage                             |
+| Email           | **Resend** + `react-email`                                                       | Transactional email                                |
+| Spam            | Cloudflare Turnstile + honeypot + rate limit (Upstash Redis or Postgres counter) |                                                    |
+| Analytics       | Vercel Analytics + GA4 (consent-gated)                                           |                                                    |
+| Hosting         | **Vercel** (prod from `main`, previews per PR)                                   | Native Next.js                                     |
+| Repo            | GitHub `mkjan30/skoposcodex`                                                     |                                                    |
+| CI              | GitHub Actions: lint, typecheck, test, build                                     |                                                    |
+| Testing         | Vitest (units), Playwright (e2e, a11y via axe)                                   |                                                    |
+| Package manager | pnpm                                                                             |                                                    |
 
 ## 3. Architecture
 
@@ -64,7 +64,7 @@ src/
       privacy/page.tsx
       terms/page.tsx
       layout.tsx                  # header + footer
-    onboard/page.tsx
+    (marketing)/onboard/page.tsx   # inside marketing group so it gets header/footer
     admin/
       layout.tsx  page.tsx  leads/[id]/page.tsx  onboarding/[id]/page.tsx
     api/upload-url/route.ts       # issues signed upload URLs
@@ -93,16 +93,17 @@ All marketing copy lives in `src/content/*` so pages are pure layout and copy ch
 
 ## 5. Rendering & data
 
-| Route | Rendering |
-|-------|-----------|
-| Marketing pages | Static (SSG) |
+| Route              | Rendering                                                     |
+| ------------------ | ------------------------------------------------------------- |
+| Marketing pages    | Static (SSG)                                                  |
 | `/services/[slug]` | `generateStaticParams` from content files; unknown slug → 404 |
-| `/onboard` | Static shell + client component |
-| `/admin/*` | Dynamic, `noindex`, middleware-protected |
+| `/onboard`         | Static shell + client component                               |
+| `/admin/*`         | Dynamic, `noindex`, middleware-protected                      |
 
 ## 6. Forms — server contract
 
 ### Contact (`actions/contact.ts`)
+
 1. Verify Turnstile token; reject if honeypot filled.
 2. Rate-limit by IP hash (5/hour).
 3. `contactSchema.parse` (trim, max lengths, email format, enum service).
@@ -111,11 +112,13 @@ All marketing copy lives in `src/content/*` so pages are pure layout and copy ch
 6. Return `{ ok: true }` or `{ ok: false, fieldErrors }`.
 
 ### Upload URL (`api/upload-url`)
+
 - Input: `submissionId` (uuid), `slot`, `filename`, `size`, `mime`.
 - Validate mime allow-list and size ≤ 25 MB; path = `onboarding/{submissionId}/{slot}/{uuid}-{safeName}`.
 - Return `createSignedUploadUrl` token. Rate-limited.
 
 ### Onboarding (`actions/onboarding.ts`)
+
 1. Turnstile + rate limit.
 2. `onboardingSchema.parse` — discriminated union on `service`.
 3. Upsert `onboarding_submissions` by client `submissionId` (idempotent).
@@ -134,19 +137,19 @@ All marketing copy lives in `src/content/*` so pages are pure layout and copy ch
 
 ## 8. Environment variables
 
-| Name | Scope |
-|------|-------|
-| `NEXT_PUBLIC_SITE_URL` | public |
-| `NEXT_PUBLIC_SUPABASE_URL` | public |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public |
-| `SUPABASE_SERVICE_ROLE_KEY` | server |
-| `RESEND_API_KEY` | server |
-| `EMAIL_FROM`, `EMAIL_ADMIN_TO` | server |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | public |
-| `TURNSTILE_SECRET_KEY` | server |
-| `IP_HASH_SALT` | server |
-| `NEXT_PUBLIC_GA_ID` | public |
-| `NEXT_PUBLIC_BOOKING_URL` | public (optional) |
+| Name                             | Scope             |
+| -------------------------------- | ----------------- |
+| `NEXT_PUBLIC_SITE_URL`           | public            |
+| `NEXT_PUBLIC_SUPABASE_URL`       | public            |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY`  | public            |
+| `SUPABASE_SERVICE_ROLE_KEY`      | server            |
+| `RESEND_API_KEY`                 | server            |
+| `EMAIL_FROM`, `EMAIL_ADMIN_TO`   | server            |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | public            |
+| `TURNSTILE_SECRET_KEY`           | server            |
+| `IP_HASH_SALT`                   | server            |
+| `NEXT_PUBLIC_GA_ID`              | public            |
+| `NEXT_PUBLIC_BOOKING_URL`        | public (optional) |
 
 Committed as `.env.example`; real values in Vercel + local `.env.local` (git-ignored).
 

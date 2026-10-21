@@ -157,9 +157,9 @@ Inserts from public forms go through server actions using the **service-role key
 
 ## 6. Storage
 
-| Bucket | Public | Policy |
-|--------|--------|--------|
-| `onboarding-files` | No | Uploads only via server-issued signed upload URLs; reads only by admins via signed URLs (10 min). |
+| Bucket             | Public | Policy                                                                                            |
+| ------------------ | ------ | ------------------------------------------------------------------------------------------------- |
+| `onboarding-files` | No     | Uploads only via server-issued signed upload URLs; reads only by admins via signed URLs (10 min). |
 
 Allowed MIME: `application/pdf`, `image/png`, `image/jpeg`, `image/svg+xml`, `image/webp`, `application/zip`, `application/postscript` (AI), `application/vnd.openxmlformats-officedocument.wordprocessingml.document`. Max 25 MB/file, 10 files/submission.
 
@@ -168,30 +168,32 @@ Allowed MIME: `application/pdf`, `image/png`, `image/jpeg`, `image/svg+xml`, `im
 Step 1 sets `service`. Steps 2–3 are shared; step 4 and step 5 slots depend on the service. `*` = required.
 
 ### Step 2 — Business (`business` jsonb)
+
 `businessName*`, `contactName*`, `email*`, `phone*`, `websiteUrl`, `industry*`, `primaryCategory*`, `yearsInBusiness`, `employees`, `businessDescription*`, `streetAddress`, `city*`, `state*`, `zip`, `country*`, `serviceAreas`
 
 ### Step 3 — Goals (`goals` jsonb)
+
 `primaryGoal*`, `biggestChallenge*`, `idealCustomer*`, `differentiator`, `monthlyBudget*`, `timeline*`, `startDate`, `workedWithAgency` (bool), `previousAgency`, `previousAgencyOutcome`, `doNotTarget`
 
 ### Step 4 — Details (`details` jsonb, discriminated by `service`)
 
-| Service | Fields |
-|---------|--------|
-| **local_seo** | `gbpUrl`, `gbpVerified` (yes/no/unsure), `reviewCount`, `avgRating`, `napConsistent` (yes/no/unsure), `targetKeywords*` (5–10), `currentMainKeywordRank`, `topCompetitors*` (3), `competitorsDoBetter`, `seoTools` |
-| **ppc** | `platforms*` (Google, Meta, Microsoft, LinkedIn, TikTok, YouTube), `ranAdsBefore` (bool), `previousSpend`, `previousResults`, `mediaBudget*`, `targetCpa`, `aov_ltv`, `conversionTrackingSetUp` (yes/no/unsure), `trackingPixels`, `googleAdsId`, `metaBusinessId`, `primaryConversionGoal*`, `targetGeography*`, `landingPageUrls` |
-| **website_design** | `currentPlatform`, `hostingProvider`, `domainRegistrar`, `currentProblems`, `requiredPages*`, `requiredFeatures`, `integrations`, `copyReady` (yes/no/partial), `photography` (have/need), `sitesYouLove*`, `stylesYouHate`, `designAesthetic`, `monthlyTraffic` |
-| **funnel_building** | `funnelType*`, `hasLeadMagnet` (bool), `leadMagnetDescription`, `currentLeadSources`, `monthlyLeadVolume`, `closeRate`, `salesCycle`, `dropOffPoint`, `crm`, `crmOther`, `hasEmailList` (bool), `automationNeeded`, `bookingTool`, `paymentProcessor`, `funnelBuilder`, `currentLandingPages` |
-| **branding** | `brandingWork*` (logo, identity, guidelines, naming, rebrand…), `brandAge`, `currentBrandProblems`, `mission`, `brandPromise`, `currentTagline`, `personality*` (≤ 3), `positioning`, `colorDirection`, `primaryColors`, `brandFonts`, `brandsYouAdmire`, `competitorBrands`, `deliverableFormats*` |
+| Service             | Fields                                                                                                                                                                                                                                                                                                                              |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **local_seo**       | `gbpUrl`, `gbpVerified` (yes/no/unsure), `reviewCount`, `avgRating`, `napConsistent` (yes/no/unsure), `targetKeywords*` (5–10), `currentMainKeywordRank`, `topCompetitors*` (3), `competitorsDoBetter`, `seoTools`                                                                                                                  |
+| **ppc**             | `platforms*` (Google, Meta, Microsoft, LinkedIn, TikTok, YouTube), `ranAdsBefore` (bool), `previousSpend`, `previousResults`, `mediaBudget*`, `targetCpa`, `aov_ltv`, `conversionTrackingSetUp` (yes/no/unsure), `trackingPixels`, `googleAdsId`, `metaBusinessId`, `primaryConversionGoal*`, `targetGeography*`, `landingPageUrls` |
+| **website_design**  | `currentPlatform`, `hostingProvider`, `domainRegistrar`, `currentProblems`, `requiredPages*`, `requiredFeatures`, `integrations`, `copyReady` (yes/no/partial), `photography` (have/need), `sitesYouLove*`, `stylesYouHate`, `designAesthetic`, `monthlyTraffic`                                                                    |
+| **funnel_building** | `funnelType*`, `hasLeadMagnet` (bool), `leadMagnetDescription`, `currentLeadSources`, `monthlyLeadVolume`, `closeRate`, `salesCycle`, `dropOffPoint`, `crm`, `crmOther`, `hasEmailList` (bool), `automationNeeded`, `bookingTool`, `paymentProcessor`, `funnelBuilder`, `currentLandingPages`                                       |
+| **branding**        | `brandingWork*` (logo, identity, guidelines, naming, rebrand…), `brandAge`, `currentBrandProblems`, `mission`, `brandPromise`, `currentTagline`, `personality*` (≤ 3), `positioning`, `colorDirection`, `primaryColors`, `brandFonts`, `brandsYouAdmire`, `competitorBrands`, `deliverableFormats*`                                 |
 
 ### Step 5 — Document slots (`onboarding_files.slot`)
 
-| Service | Slots |
-|---------|-------|
-| **local_seo** | `logo`, `gbp_screenshots`, `business_photos`, `keyword_rankings` |
-| **ppc** | `past_campaign_reports`, `brand_assets`, `landing_page_files` |
-| **website_design** | `logo`, `brand_guidelines`, `photography`, `copy_content`, `inspiration` |
-| **funnel_building** | `lead_magnet_asset`, `email_sequences`, `brand_assets` |
-| **branding** | `existing_logo`, `marketing_materials`, `brand_inspiration`, `competitor_examples` |
+| Service             | Slots                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| **local_seo**       | `logo`, `gbp_screenshots`, `business_photos`, `keyword_rankings`                   |
+| **ppc**             | `past_campaign_reports`, `brand_assets`, `landing_page_files`                      |
+| **website_design**  | `logo`, `brand_guidelines`, `photography`, `copy_content`, `inspiration`           |
+| **funnel_building** | `lead_magnet_asset`, `email_sequences`, `brand_assets`                             |
+| **branding**        | `existing_logo`, `marketing_materials`, `brand_inspiration`, `competitor_examples` |
 
 > **Changed from reference:** fields like "Current website login / CMS access", "CRM access / login" and "Google Ads / Meta Ads account access" are **not** collected. Step 5 instead shows per-service instructions to invite `access@<domain>` as a user. Never store third-party passwords.
 
@@ -211,9 +213,9 @@ Step 1 sets `service`. Steps 2–3 are shared; step 4 and step 5 slots depend on
 
 ## 10. Retention
 
-| Data | Keep |
-|------|------|
-| `leads` (status `spam`) | 30 days |
-| `leads` (other) | 24 months |
-| `onboarding_files` | 90 days after submission `archived`, then delete object + row |
-| `rate_limits` | rows older than 24 h purged daily (pg_cron) |
+| Data                    | Keep                                                          |
+| ----------------------- | ------------------------------------------------------------- |
+| `leads` (status `spam`) | 30 days                                                       |
+| `leads` (other)         | 24 months                                                     |
+| `onboarding_files`      | 90 days after submission `archived`, then delete object + row |
+| `rate_limits`           | rows older than 24 h purged daily (pg_cron)                   |

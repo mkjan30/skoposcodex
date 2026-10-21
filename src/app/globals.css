@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-exo);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-glow: var(--brand-glow);
+  --color-surface-light: var(--surface-light);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Dark-only site: tokens from docs/04-UI-UX-Design-Brief.md §2 */
+  --background: #050816;
+  --foreground: #fafafa;
+  --card: #0b1022;
+  --card-foreground: #fafafa;
+  --popover: #0b1022;
+  --popover-foreground: #fafafa;
+  --primary: #ff9500;
+  --primary-foreground: #050816;
+  --secondary: #141a33;
+  --secondary-foreground: #fafafa;
+  --muted: #141a33;
+  --muted-foreground: #86868b;
+  --accent: #141a33;
+  --accent-foreground: #fafafa;
+  --destructive: #f87171;
+  --border: rgb(212 212 216 / 12%);
+  --input: rgb(212 212 216 / 15%);
+  --ring: #ff9500;
+  --chart-1: #ff9500;
+  --chart-2: #ff6b00;
+  --chart-3: #ff9a5a;
+  --chart-4: #ffb070;
+  --chart-5: #86868b;
+  --radius: 0.5rem;
+  --brand: #ff9500;
+  --brand-strong: #ff6b00;
+  --brand-soft: #ff9a5a;
+  --brand-glow: #ffb070;
+  --surface-light: #f6f5fb;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6;
+}
+
+@utility text-gradient {
+  @apply from-brand to-brand-strong bg-gradient-to-r bg-clip-text text-transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

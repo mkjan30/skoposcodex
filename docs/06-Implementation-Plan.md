@@ -7,24 +7,24 @@
 
 ## 0. Inputs needed before Phase 2
 
-| Item | Owner | Status |
-|------|-------|--------|
-| Final brand name, logo (SVG), favicon | You | ☐ |
-| Confirm the "few changes" list (PRD §7) | You | ☐ |
-| Real contact email, phone, location, social URLs | You | ☐ |
-| Real stats, testimonials, case study (or approval to ship placeholders as clearly fake) | You | ☐ |
-| Domain + DNS access | You | ☐ |
-| Accounts: Vercel, Supabase, Resend, Cloudflare (Turnstile) | You | ☐ |
+| Item                                                                                    | Owner | Status |
+| --------------------------------------------------------------------------------------- | ----- | ------ |
+| Final brand name, logo (SVG), favicon                                                   | You   | ☐      |
+| Confirm the "few changes" list (PRD §7)                                                 | You   | ☐      |
+| Real contact email, phone, location, social URLs                                        | You   | ☐      |
+| Real stats, testimonials, case study (or approval to ship placeholders as clearly fake) | You   | ☐      |
+| Domain + DNS access                                                                     | You   | ☐      |
+| Accounts: Vercel, Supabase, Resend, Cloudflare (Turnstile)                              | You   | ☐      |
 
 ## Phase 1 — Foundation (day 1–2)
 
-- [ ] `pnpm create next-app` (TS, App Router, Tailwind, ESLint, `src/`)
-- [ ] shadcn/ui init; add Button, Accordion, Input, Textarea, Select, Dialog, Sheet, Progress, Toast, Table, Badge
-- [ ] `next/font`: Inter + Exo; design tokens in `globals.css` (Design Brief §2–4)
-- [ ] `src/content/site.ts` (brand, nav, footer, contact)
-- [ ] Header (desktop dropdown + mobile sheet), Footer, marketing layout
-- [ ] `.env.example`, `.gitignore`, Prettier, GitHub Actions CI (lint, typecheck, build)
-- [ ] Connect repo to Vercel → preview deploys
+- [x] `pnpm create next-app` (TS, App Router, Tailwind, ESLint, `src/`)
+- [x] shadcn/ui init; add Button, Accordion, Input, Textarea, Select, Dialog, Sheet, Progress, Toast, Table, Badge
+- [x] `next/font`: Inter + Exo; design tokens in `globals.css` (Design Brief §2–4)
+- [x] `src/content/site.ts` (brand, nav, footer, contact)
+- [x] Header (desktop dropdown + mobile sheet), Footer, marketing layout
+- [x] `.env.example`, `.gitignore`, Prettier, GitHub Actions CI (lint, typecheck, build)
+- [ ] ⏳ Connect repo to Vercel (needs your Vercel account) → preview deploys
 
 **Done when:** empty pages render with header/footer on a Vercel preview; CI green.
 
@@ -97,15 +97,15 @@
 
 ## Timeline summary
 
-| Phase | Days | Cumulative |
-|-------|------|-----------|
-| 1 Foundation | 2 | 2 |
-| 2 Sections | 2 | 4 |
-| 3 Pages | 4 | 8 |
-| 4 Backend + Contact | 2 | 10 |
-| 5 Onboarding | 5 | 15 |
-| 6 Admin | 2 | 17 |
-| 7 QA & Launch | 3 | 20 |
+| Phase               | Days | Cumulative |
+| ------------------- | ---- | ---------- |
+| 1 Foundation        | 2    | 2          |
+| 2 Sections          | 2    | 4          |
+| 3 Pages             | 4    | 8          |
+| 4 Backend + Contact | 2    | 10         |
+| 5 Onboarding        | 5    | 15         |
+| 6 Admin             | 2    | 17         |
+| 7 QA & Launch       | 3    | 20         |
 
 ≈ 4 working weeks for one developer with Claude Code.
 
