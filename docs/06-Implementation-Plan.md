@@ -59,8 +59,9 @@ Measured on a local production build (Lighthouse 12, simulated mobile, 2026-10-2
 - [x] Resend: admin notification + visitor confirmation templates
 - [x] Accounts connected on Vercel (Production): Supabase (integration), Resend (domain verified, sends as info@skoposcodex.com), Turnstile (real keys), IP_HASH_SALT
 - [x] Migrations `0001`, `0002` run in Supabase (2026-10-22); public read/insert on `leads` confirmed blocked
-- [ ] ⏳ Run `0003_lock_rate_limit_fn.sql` (anon could call `hit_rate_limit()`; Supabase grants EXECUTE to anon/authenticated directly)
-- [ ] ⏳ Confirm the live test lead: success screen, lead email in Gmail, confirmation email, row in `leads` (Hobby plan keeps ~30 min of runtime logs, so it can't be checked from logs afterwards)
+- [x] `0003_lock_rate_limit_fn.sql` run; anon call to `hit_rate_limit()` now returns 401 permission denied
+- [x] Live test lead (2026-10-22): success screen, row in `leads`, lead email delivered to Gmail via info@skoposcodex.com
+- [ ] Visitor confirmation email not yet checked (test used a made-up address) — confirm with a real address or in Resend → Emails
 
 Tested locally without Supabase: field errors, focus management, input kept after errors (including the service select), Turnstile token refresh between attempts, generic error when the database is unreachable.
 

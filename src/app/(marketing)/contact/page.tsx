@@ -90,7 +90,7 @@ export default async function ContactPage({
       </section>
 
       <section className="container-page grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.6fr_1fr]">
-        <div className="bg-card rounded-3xl border p-5 sm:p-10">
+        <div className="bg-card flex flex-col justify-center rounded-3xl border p-5 sm:p-10">
           <ContactForm defaultService={serviceFromSlug(service)} />
         </div>
 
