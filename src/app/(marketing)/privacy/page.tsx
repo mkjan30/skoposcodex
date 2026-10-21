@@ -70,7 +70,8 @@ export default function PrivacyPage() {
       <p>
         You can ask to access, correct or delete the personal information we hold about you, or
         withdraw consent to analytics at any time. Depending on where you live (for example under
-        the GDPR or the CCPA), you may have additional rights. To make a request,{" "}
+        the GDPR or the CCPA), you may have additional rights. To make a request, email{" "}
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> or{" "}
         <Link href="/contact">contact us</Link>.
       </p>
 

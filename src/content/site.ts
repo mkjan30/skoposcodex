@@ -22,7 +22,12 @@ export const site = {
   // Hidden in the footer until real profile URLs exist (PRD §7).
   socials: [] as { label: string; href: string }[],
   // TODO(launch): fill in real details; the contact page shows only the ones that are set.
-  contact: {} as { email?: string; phone?: string; hours?: string; location?: string },
+  contact: { email: "info@skoposcodex.com" } as {
+    email?: string;
+    phone?: string;
+    hours?: string;
+    location?: string;
+  },
 };
 
 export type Service = {

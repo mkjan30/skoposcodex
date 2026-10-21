@@ -37,6 +37,7 @@ Set the same variables in Vercel → Project → Settings → Environment Variab
 - Vercel project **`skoposcodex`** (team "Maksud's projects") is connected to this GitHub repo: every push to `main` deploys to production; other branches get preview URLs.
 - Live: **https://skoposcodex.com** (primary). `www.skoposcodex.com` 301-redirects to it (path and query kept); `http` → `https`.
 - DNS is on Cloudflare (registrar: WordPress.com), all **DNS only** (grey cloud): `@` A → `216.198.79.1`, `64.29.17.1`; `www` CNAME → `05d61b087a62c4e4.vercel-dns-017.com`. No AAAA records (Vercel serves IPv4; stray AAAA records send IPv6 visitors elsewhere).
+- Email: `info@skoposcodex.com` (Cloudflare Email Routing → team Gmail). Resend sends from it (`EMAIL_FROM`) and new leads go to it (`EMAIL_ADMIN_TO`); the domain is verified in Resend.
 - Vercel env: `NEXT_PUBLIC_SITE_URL=https://skoposcodex.com` (canonical URLs, sitemap, OG images) and `ENABLE_EXPERIMENTAL_COREPACK=1` (builds use the pnpm version in `package.json`).
 
 ## Checks
