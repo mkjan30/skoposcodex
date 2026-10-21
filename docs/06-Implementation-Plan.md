@@ -24,7 +24,7 @@
 - [x] `src/content/site.ts` (brand, nav, footer, contact)
 - [x] Header (desktop dropdown + mobile sheet), Footer, marketing layout
 - [x] `.env.example`, `.gitignore`, Prettier, GitHub Actions CI (lint, typecheck, build)
-- [x] Connect repo to Vercel → project `skoposcodex`, auto-deploys from `main`; live at https://www.skoposcodex.com (bare domain → www via Cloudflare)
+- [x] Connect repo to Vercel → project `skoposcodex`, auto-deploys from `main`; live at https://skoposcodex.com (www → bare domain, 301)
 
 **Done when:** empty pages render with header/footer on a Vercel preview; CI green.
 
@@ -92,7 +92,7 @@ Tested locally without Supabase: field errors, focus management, input kept afte
 - [ ] Analytics + consent banner; conversion events (App Flow §5)
 - [ ] Content proofread; replace every `TODO(launch)` placeholder (`grep -rn "TODO(launch)" src`): stats, case studies, testimonials, home dashboard figures, retention figure; legal review of Privacy/Terms
 - [ ] Bring LCP under 2.0 s (font loading / hero render path)
-- [x] Domain + SSL on Vercel (www); bare-domain redirect via Cloudflare
+- [x] Domain + SSL on Vercel: skoposcodex.com primary, www → bare 301
 - [ ] Resend domain verification (SPF/DKIM)
 - [ ] Submit sitemap to Google Search Console
 
