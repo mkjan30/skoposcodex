@@ -24,7 +24,7 @@
 - [x] `src/content/site.ts` (brand, nav, footer, contact)
 - [x] Header (desktop dropdown + mobile sheet), Footer, marketing layout
 - [x] `.env.example`, `.gitignore`, Prettier, GitHub Actions CI (lint, typecheck, build)
-- [ ] ⏳ Connect repo to Vercel (needs your Vercel account) → preview deploys
+- [x] Connect repo to Vercel → project `skopos-codex`, auto-deploys from `main` (live at https://skopos-codex.vercel.app); custom domain pending
 
 **Done when:** empty pages render with header/footer on a Vercel preview; CI green.
 

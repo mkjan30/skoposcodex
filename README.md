@@ -32,6 +32,13 @@ Accounts the contact form needs (Phase 4):
 
 Set the same variables in Vercel → Project → Settings → Environment Variables.
 
+## Deploy
+
+- Vercel project `skopos-codex` (team "Maksud's projects") is connected to this GitHub repo: every push to `main` deploys to production, other branches get preview URLs.
+- Live: https://skopos-codex.vercel.app (custom domain to be attached; DNS on Cloudflare).
+- `ENABLE_EXPERIMENTAL_COREPACK=1` is set on Vercel so builds use the pnpm version in `package.json`.
+- The site URL (canonical, sitemap, OG) comes from `NEXT_PUBLIC_SITE_URL`, else Vercel's production domain.
+
 ## Checks
 
 ```bash
