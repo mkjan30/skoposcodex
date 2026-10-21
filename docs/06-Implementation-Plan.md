@@ -52,11 +52,15 @@ Measured on a local production build (Lighthouse 12, simulated mobile, 2026-10-2
 
 ## Phase 4 — Backend + Contact (day 9–10)
 
-- [ ] Supabase project; migrations `0001_init`, `0002_storage` (Backend Schema §3–6)
-- [ ] `lib/supabase/server.ts`, rate limiter, Turnstile verify
-- [ ] `contactSchema` (zod) + tests
-- [ ] Contact page + server action; `?service=` preselect
-- [ ] Resend: admin notification + visitor confirmation templates
+- [x] Migrations `0001_init`, `0002_storage` (Backend Schema §3–6) — validated against PGlite (constraints, citext, rate limiter, `is_admin()`, bucket)
+- [x] `lib/supabase/server.ts`, rate limiter, Turnstile verify, IP hashing (`lib/security.ts`)
+- [x] `contactSchema` (zod) + tests; server action + tests (honeypot, spam check, rate limit, field errors, email failure, DB failure)
+- [x] Contact page + server action; `?service=` preselect
+- [x] Resend: admin notification + visitor confirmation templates
+- [ ] ⏳ **Needs your accounts** — Supabase project (run migrations), Resend (verified sending domain), Cloudflare Turnstile (real keys); values go in `.env.local` and Vercel (see README → Setup)
+- [ ] ⏳ Live end-to-end test once the above exist
+
+Tested locally without Supabase: field errors, focus management, input kept after errors (including the service select), Turnstile token refresh between attempts, generic error when the database is unreachable.
 
 **Done when:** a real submission lands in `leads`, both emails arrive, spam/rate-limit paths tested.
 

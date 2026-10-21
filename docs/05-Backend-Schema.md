@@ -155,6 +155,8 @@ create policy admin_read on admins                for select using (is_admin());
 
 Inserts from public forms go through server actions using the **service-role key**, after zod validation, Turnstile and rate limiting.
 
+**Rate limiting:** `hit_rate_limit(p_key text, p_window_seconds int, p_max int) returns boolean` atomically increments a fixed-window counter in `rate_limits` and returns `true` while the key is within `p_max` hits. Execute is revoked from `public`, so only the service role can call it. The contact form uses key `contact:{ip_hash}`, 5 per hour.
+
 ## 6. Storage
 
 | Bucket             | Public | Policy                                                                                            |

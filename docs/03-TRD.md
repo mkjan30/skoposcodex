@@ -12,24 +12,24 @@ We keep the same frontend stack so the replica is faithful, and add a small back
 
 ## 2. Stack
 
-| Layer           | Choice                                                                           | Why                                                                  |
-| --------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Framework       | **Next.js 15** (App Router, TypeScript, React 19)                                | Matches reference; SSG + server actions                              |
-| Styling         | **Tailwind CSS v4** + **shadcn/ui**                                              | Matches reference tokens/components                                  |
-| Icons           | `lucide-react`                                                                   | Matches reference                                                    |
-| Motion          | CSS transitions + `IntersectionObserver` (`useInViewOnce`)                       | No animation library: keeps shared JS small; respects reduced motion |
-| Forms           | `react-hook-form` + `zod`                                                        | One schema shared by client and server                               |
-| Database        | **Supabase Postgres**                                                            | Managed Postgres + auth + storage in one                             |
-| File storage    | Supabase Storage (private bucket, signed upload/download URLs)                   | Direct-from-browser uploads                                          |
-| Auth (admin)    | Supabase Auth magic link + allow-list                                            | No passwords to manage                                               |
-| Email           | **Resend** + `react-email`                                                       | Transactional email                                                  |
-| Spam            | Cloudflare Turnstile + honeypot + rate limit (Upstash Redis or Postgres counter) |                                                                      |
-| Analytics       | Vercel Analytics + GA4 (consent-gated)                                           |                                                                      |
-| Hosting         | **Vercel** (prod from `main`, previews per PR)                                   | Native Next.js                                                       |
-| Repo            | GitHub `mkjan30/skoposcodex`                                                     |                                                                      |
-| CI              | GitHub Actions: lint, typecheck, test, build                                     |                                                                      |
-| Testing         | Vitest (units), Playwright (e2e, a11y via axe)                                   |                                                                      |
-| Package manager | pnpm                                                                             |                                                                      |
+| Layer           | Choice                                                                              | Why                                                                  |
+| --------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Framework       | **Next.js 15** (App Router, TypeScript, React 19)                                   | Matches reference; SSG + server actions                              |
+| Styling         | **Tailwind CSS v4** + **shadcn/ui**                                                 | Matches reference tokens/components                                  |
+| Icons           | `lucide-react`                                                                      | Matches reference                                                    |
+| Motion          | CSS transitions + `IntersectionObserver` (`useInViewOnce`)                          | No animation library: keeps shared JS small; respects reduced motion |
+| Forms           | Native forms + React 19 `useActionState` + `zod` (server)                           | Works without JS; one schema on the server; no form library needed   |
+| Database        | **Supabase Postgres**                                                               | Managed Postgres + auth + storage in one                             |
+| File storage    | Supabase Storage (private bucket, signed upload/download URLs)                      | Direct-from-browser uploads                                          |
+| Auth (admin)    | Supabase Auth magic link + allow-list                                               | No passwords to manage                                               |
+| Email           | **Resend** REST API via `fetch` + plain HTML/text templates                         | Transactional email; no SDK for a few emails                         |
+| Spam            | Cloudflare Turnstile + honeypot + rate limit (Postgres `hit_rate_limit()` function) |                                                                      |
+| Analytics       | Vercel Analytics + GA4 (consent-gated)                                              |                                                                      |
+| Hosting         | **Vercel** (prod from `main`, previews per PR)                                      | Native Next.js                                                       |
+| Repo            | GitHub `mkjan30/skoposcodex`                                                        |                                                                      |
+| CI              | GitHub Actions: lint, typecheck, test, build                                        |                                                                      |
+| Testing         | Vitest (units), Playwright (e2e, a11y via axe)                                      |                                                                      |
+| Package manager | pnpm                                                                                |                                                                      |
 
 ## 3. Architecture
 
@@ -80,11 +80,11 @@ src/
     services/*.ts                 # one typed object per service
     process.ts  why-us.ts  home.ts
   lib/
-    schemas/contact.ts            # zod
+    schemas/contact.ts            # zod (+ contact.test.ts)
     schemas/onboarding.ts         # zod, discriminated by service
-    supabase/server.ts  supabase/client.ts
-    email/*.tsx
-    rate-limit.ts
+    supabase/server.ts            # service-role client (server-only)
+    security.ts                   # client IP, IP hashing, rate limit, Turnstile verify
+    email.ts  emails/*.ts         # Resend sender + templates
 supabase/
   migrations/*.sql
 ```
@@ -104,12 +104,13 @@ All marketing copy lives in `src/content/*` so pages are pure layout and copy ch
 
 ### Contact (`actions/contact.ts`)
 
-1. Verify Turnstile token; reject if honeypot filled.
-2. Rate-limit by IP hash (5/hour).
-3. `contactSchema.parse` (trim, max lengths, email format, enum service).
-4. Insert into `leads`.
-5. Send admin + visitor emails (failures logged, not fatal).
-6. Return `{ ok: true }` or `{ ok: false, fieldErrors }`.
+1. Honeypot filled → return fake success, save nothing.
+2. Verify Turnstile token.
+3. `contactSchema.safeParse` (trim, control chars, max lengths, email format, enum service) — before the rate limit, so invalid input costs no DB write.
+4. Rate-limit by salted IP hash (5/hour) via `hit_rate_limit()`.
+5. Insert into `leads` (with `source_page`, `utm_*` from it, `user_agent`).
+6. Send admin + visitor emails (failures logged, not fatal).
+7. Return `ContactState`: `success` with first name, or `error` with `fieldErrors` / `message`, the submitted `values` and an `attempt` counter (keys the fields so they remount with the user's input after React's post-action form reset).
 
 ### Upload URL (`api/upload-url`)
 
