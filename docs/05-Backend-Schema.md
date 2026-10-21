@@ -211,6 +211,7 @@ Step 1 sets `service`. Steps 2–3 are shared; step 4 and step 5 slots depend on
 
 - `supabase/migrations/0001_init.sql` — §3–§5.
 - `supabase/migrations/0002_storage.sql` — bucket + storage policies.
+- `supabase/migrations/0003_lock_rate_limit_fn.sql` — revokes `hit_rate_limit()` from `anon`/`authenticated` (Supabase grants them EXECUTE by default).
 - `supabase/seed.sql` — one admin email (from env, not committed), sample leads for local dev.
 
 ## 10. Retention

@@ -58,8 +58,9 @@ Measured on a local production build (Lighthouse 12, simulated mobile, 2026-10-2
 - [x] Contact page + server action; `?service=` preselect
 - [x] Resend: admin notification + visitor confirmation templates
 - [x] Accounts connected on Vercel (Production): Supabase (integration), Resend (domain verified, sends as info@skoposcodex.com), Turnstile (real keys), IP_HASH_SALT
-- [ ] ⏳ Run `supabase/migrations/0001_init.sql` then `0002_storage.sql` in the Supabase SQL editor (tables not created yet as of 2026-10-22)
-- [ ] ⏳ Live end-to-end test from a real browser (Turnstile blocks automated browsers by design)
+- [x] Migrations `0001`, `0002` run in Supabase (2026-10-22); public read/insert on `leads` confirmed blocked
+- [ ] ⏳ Run `0003_lock_rate_limit_fn.sql` (anon could call `hit_rate_limit()`; Supabase grants EXECUTE to anon/authenticated directly)
+- [ ] ⏳ Confirm the live test lead: success screen, lead email in Gmail, confirmation email, row in `leads` (Hobby plan keeps ~30 min of runtime logs, so it can't be checked from logs afterwards)
 
 Tested locally without Supabase: field errors, focus management, input kept after errors (including the service select), Turnstile token refresh between attempts, generic error when the database is unreachable.
 

@@ -25,7 +25,7 @@ pnpm dev
 
 Accounts the contact form needs (Phase 4):
 
-1. **Supabase** — create a project, then run `supabase/migrations/0001_init.sql` and `0002_storage.sql` in the SQL editor (in order). Copy the project URL, anon key and service-role key into `.env.local`. Add staff emails to the `admins` table.
+1. **Supabase** — create a project, then run every file in `supabase/migrations/` in the SQL editor, in order (`0001`, `0002`, `0003`, …). Copy the project URL, anon key and service-role key into `.env.local`. Add staff emails to the `admins` table.
 2. **Resend** — verify your sending domain, create an API key, set `EMAIL_FROM` (e.g. `Skopos Codex <hello@yourdomain>`) and `EMAIL_ADMIN_TO` (where new leads go).
 3. **Cloudflare Turnstile** — create a widget for your domain and use its site/secret keys. Locally you can use Cloudflare's test keys (see `.env.example`).
 4. `IP_HASH_SALT` — any long random string (`openssl rand -hex 32`).
