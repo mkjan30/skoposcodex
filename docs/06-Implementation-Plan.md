@@ -39,12 +39,14 @@
 
 ## Phase 3 — Marketing pages (day 5–8)
 
-- [ ] Home (`content/home.ts`)
-- [ ] Service template `services/[slug]` + 5 content files (rewritten copy, single timeline source)
-- [ ] Process
-- [ ] Why Us
-- [ ] Privacy, Terms, 404
-- [ ] Metadata, OG image, JSON-LD, `sitemap.ts`, `robots.ts`
+- [x] Home (`content/home.ts`)
+- [x] Service template `services/[slug]` + 5 content files (rewritten copy, single timeline source)
+- [x] Process
+- [x] Why Us
+- [x] Privacy, Terms, 404
+- [x] Metadata, OG image, JSON-LD, `sitemap.ts`, `robots.ts`
+
+Measured on a local production build (Lighthouse 12, simulated mobile, 2026-10-21): Performance 94–96, Accessibility 100, Best Practices 100, SEO 100 on Home, Local SEO, Process, Why Us and Privacy. CLS 0. LCP 2.8–3.1 s; the PRD target is < 2.0 s, which is a Phase 7 item.
 
 **Done when:** all marketing routes match the reference structure on desktop + mobile; no `#` links; Lighthouse ≥ 90 on preview.
 
@@ -84,7 +86,8 @@
 - [ ] axe a11y pass; keyboard-only run of wizard
 - [ ] Cross-browser (Chrome, Safari iOS, Firefox, Edge)
 - [ ] Analytics + consent banner; conversion events (App Flow §5)
-- [ ] Content proofread; replace/confirm placeholder stats & testimonials
+- [ ] Content proofread; replace every `TODO(launch)` placeholder (`grep -rn "TODO(launch)" src`): stats, case studies, testimonials, home dashboard figures, retention figure; legal review of Privacy/Terms
+- [ ] Bring LCP under 2.0 s (font loading / hero render path)
 - [ ] Domain + SSL on Vercel; Resend domain verification (SPF/DKIM)
 - [ ] Submit sitemap to Google Search Console
 

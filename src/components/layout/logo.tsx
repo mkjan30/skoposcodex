@@ -2,7 +2,6 @@ import { useId } from "react";
 import Link from "next/link";
 import { Montserrat } from "next/font/google";
 
-import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["300", "800"], display: "swap" });
@@ -31,15 +30,12 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <Link
-      href="/"
-      aria-label={`${site.name} home`}
-      className={cn("flex items-center gap-2.5 text-white", className)}
-    >
+    <Link href="/" className={cn("flex items-center gap-2.5 text-white", className)}>
       <LogoMark className="h-7 w-auto" />
-      <span className={cn(montserrat.className, "flex flex-col leading-none")} aria-hidden>
-        <span className="text-[17px] font-extrabold tracking-[0.02em]">SKOPOS</span>
-        <span className="mt-0.5 text-[11px] font-light tracking-[0.42em]">CODEX</span>
+      {/* The visible wordmark is the link's accessible name ("Skopos Codex"). */}
+      <span className={cn(montserrat.className, "flex flex-col leading-none uppercase")}>
+        <span className="text-[17px] font-extrabold tracking-[0.02em]">Skopos</span>{" "}
+        <span className="mt-0.5 text-[11px] font-light tracking-[0.42em]">Codex</span>
       </span>
     </Link>
   );

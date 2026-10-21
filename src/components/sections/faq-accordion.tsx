@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { JsonLd } from "@/components/seo/json-ld";
 
 export type Faq = { question: string; answer: string };
 
@@ -33,11 +34,7 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
           </AccordionItem>
         ))}
       </Accordion>
-      <script
-        type="application/ld+json"
-        // JSON.stringify output with "<" escaped cannot break out of the script tag.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      <JsonLd data={jsonLd} />
     </>
   );
 }

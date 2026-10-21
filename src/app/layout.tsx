@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Exo, Inter } from "next/font/google";
 
+import { JsonLd } from "@/components/seo/json-ld";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -15,6 +16,17 @@ export const metadata: Metadata = {
   },
   description: site.description,
   openGraph: { siteName: site.name, type: "website" },
+  twitter: { card: "summary_large_image" },
+};
+
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.name,
+  legalName: site.legalName,
+  url: site.url,
+  logo: `${site.url}/brand/skopos-codex-logo.svg`,
+  description: site.description,
 };
 
 export default function RootLayout({
@@ -24,7 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${exo.variable}`}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <JsonLd data={organizationLd} />
+        {children}
+      </body>
     </html>
   );
 }

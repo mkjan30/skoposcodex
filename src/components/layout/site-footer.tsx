@@ -56,7 +56,7 @@ export function SiteFooter() {
           <ul className="flex gap-6">
             {legalLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="hover:text-foreground">
+                <Link href={l.href} className="hover:text-foreground inline-block py-1.5">
                   {l.label}
                 </Link>
               </li>
@@ -78,10 +78,13 @@ function FooterColumn({
   return (
     <div>
       <p className="text-brand mb-4 text-xs font-semibold tracking-[0.12em] uppercase">{title}</p>
-      <ul className="space-y-3 text-sm">
+      <ul className="space-y-1 text-sm">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="text-muted-foreground hover:text-foreground">
+            <Link
+              href={l.href}
+              className="text-muted-foreground hover:text-foreground inline-block py-1.5"
+            >
               {l.label}
             </Link>
           </li>
