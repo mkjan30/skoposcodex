@@ -46,32 +46,33 @@
   /* Dark-only site: tokens from docs/04-UI-UX-Design-Brief.md §2 */
   --background: #050816;
   --foreground: #fafafa;
-  --card: #0b1022;
+  --card: #0b1627;
   --card-foreground: #fafafa;
-  --popover: #0b1022;
+  --popover: #0b1627;
   --popover-foreground: #fafafa;
-  --primary: #ff9500;
+  --primary: #19e3ff;
   --primary-foreground: #050816;
-  --secondary: #141a33;
+  --secondary: #13233a;
   --secondary-foreground: #fafafa;
-  --muted: #141a33;
-  --muted-foreground: #86868b;
-  --accent: #141a33;
+  --muted: #13233a;
+  --muted-foreground: #9fb3c8;
+  --accent: #13233a;
   --accent-foreground: #fafafa;
   --destructive: #f87171;
-  --border: rgb(212 212 216 / 12%);
-  --input: rgb(212 212 216 / 15%);
-  --ring: #ff9500;
-  --chart-1: #ff9500;
-  --chart-2: #ff6b00;
-  --chart-3: #ff9a5a;
-  --chart-4: #ffb070;
-  --chart-5: #86868b;
+  --border: rgb(159 179 200 / 14%);
+  --input: rgb(159 179 200 / 18%);
+  --ring: #19e3ff;
+  --chart-1: #19e3ff;
+  --chart-2: #2b8cff;
+  --chart-3: #0a6cff;
+  --chart-4: #7af0ff;
+  --chart-5: #9fb3c8;
   --radius: 0.5rem;
-  --brand: #ff9500;
-  --brand-strong: #ff6b00;
-  --brand-soft: #ff9a5a;
-  --brand-glow: #ffb070;
+  /* Logo gradient is #19e3ff → #0a6cff; #2b8cff is used as the end stop where dark text sits on it (≥4.5:1). */
+  --brand: #19e3ff;
+  --brand-strong: #2b8cff;
+  --brand-soft: #5eb8ff;
+  --brand-glow: #7af0ff;
   --surface-light: #f6f5fb;
 }
 

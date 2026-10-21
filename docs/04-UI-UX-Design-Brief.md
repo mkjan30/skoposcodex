@@ -6,31 +6,31 @@
 
 ## 1. Direction
 
-Premium, data-led, confident. Dark navy canvas, warm orange accent, big display headlines, dashboard-style proof elements. Reads like a growth-ops tool, not a brochure. Replicates the rankesprit.com look and feel, re-branded.
+Premium, data-led, confident. Dark navy canvas, cyan → blue accent from the logo, big display headlines, dashboard-style proof elements. Reads like a growth-ops tool, not a brochure. Replicates the rankesprit.com look and feel, re-branded.
 
 **Tone of voice:** direct, outcome-focused, short sentences. "We don't guess." Avoid jargon walls and hype adjectives.
 
-## 2. Colour tokens (observed on reference)
+## 2. Colour tokens (from the Skopos Codex logo)
 
-| Token             | Hex                                | Use                             |
-| ----------------- | ---------------------------------- | ------------------------------- |
-| `--bg`            | `#050816`                          | Page background                 |
-| `--surface`       | `#0B1022`                          | Cards, header, dashboard panels |
-| `--surface-light` | `#F6F5FB`                          | Light sections / inverse cards  |
-| `--accent`        | `#FF9500`                          | Primary buttons, highlights     |
-| `--accent-strong` | `#FF6B00`                          | Hover/pressed, gradient end     |
-| `--accent-soft`   | `#FF9A5A`                          | Gradient text, icons, badges    |
-| `--accent-glow`   | `#FFB070`                          | Glows, chart highlights         |
-| `--text`          | `#FFFFFF` / `#FAFAFA`              | Headings on dark                |
-| `--text-muted`    | `#86868B`                          | Body on dark                    |
-| `--zinc-500`      | `#71717A`                          | Secondary text                  |
-| `--border`        | `#D4D4D8` @ 10–15% opacity on dark | Card borders                    |
+The palette was switched from the reference site's orange to the logo's cyan → blue on 2026-10-21. Tokens live in `src/app/globals.css`.
 
-Gradient: `linear-gradient(90deg, #FF9500, #FF6B00)` for primary buttons and highlighted words in H1s.
+| Token (CSS var)        | Hex                     | Use                                                  |
+| ---------------------- | ----------------------- | ---------------------------------------------------- |
+| `--background`         | `#050816`               | Page background                                      |
+| `--card`               | `#0B1627`               | Cards, header, dashboard panels (logo backdrop navy) |
+| `--muted` / `--accent` | `#13233A`               | Subtle fills, hover backgrounds                      |
+| `--brand`              | `#19E3FF`               | Primary buttons, eyebrows, icons, links, focus ring  |
+| `--brand-strong`       | `#2B8CFF`               | Gradient end for buttons and highlighted words       |
+| `--brand-soft`         | `#5EB8FF`               | Taglines, secondary highlights                       |
+| `--brand-glow`         | `#7AF0FF`               | Glows, chart highlights                              |
+| logo deep blue         | `#0A6CFF`               | Logo mark only (see contrast note)                   |
+| `--foreground`         | `#FAFAFA`               | Headings and body on dark                            |
+| `--muted-foreground`   | `#9FB3C8`               | Secondary text (logo's dim blue-grey)                |
+| `--border`             | `#9FB3C8` @ 14% on dark | Card borders                                         |
 
-Contrast checks: orange `#FF9500` on `#050816` ≈ 8.9:1 ✅; muted `#86868B` on `#050816` ≈ 5.6:1 ✅. Never put white text on `#FF9A5A` (fails) — use `#050816` text on orange buttons.
+Gradient: `linear-gradient(90deg, #19E3FF, #2B8CFF)` for primary buttons and highlighted words in H1s.
 
-> If Skopos Codex has its own brand colours, swap the accent family; keep the navy base.
+Contrast checks (WCAG): `#19E3FF` on `#050816` 12.8:1 ✅; `#2B8CFF` vs `#050816` 6.0:1 ✅; `#9FB3C8` on `#050816` ✅. The logo's `#0A6CFF` is only 4.4:1 against dark text, so it is not used behind text — buttons end on `#2B8CFF` instead. Never put white text on `#19E3FF` (fails); buttons use `#050816` text.
 
 ## 3. Typography
 
@@ -57,11 +57,11 @@ Contrast checks: orange `#FF9500` on `#050816` ≈ 8.9:1 ✅; muted `#86868B` on
 | Component              | Spec                                                                                                                                      |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | **Header**             | Transparent over hero → `--surface`/80 % + blur on scroll; 72 px tall; Services dropdown panel with icon + 1-line description per service |
-| **Button / primary**   | Orange gradient, dark text, 48 px tall, arrow icon slides 4 px on hover                                                                   |
+| **Button / primary**   | Cyan → blue gradient, dark text, 48 px tall, arrow icon slides 4 px on hover                                                              |
 | **Button / secondary** | Transparent, 1 px white/20 border, white text                                                                                             |
 | **Badge / pill**       | Small rounded pill with sparkle icon, links to `/process`                                                                                 |
 | **Dashboard card**     | Surface panel: 4 KPI tiles (value, label, ▲ delta in green), keyword table (keyword, rank, ±change), faux sparkline                       |
-| **Service card**       | Icon in orange-tinted square, title, 2-line copy, "Learn more →"                                                                          |
+| **Service card**       | Icon in cyan-tinted square, title, 2-line copy, "Learn more →"                                                                            |
 | **Industries ticker**  | Infinite horizontal marquee, pause on hover, static wrap for reduced motion                                                               |
 | **Step card**          | Large outlined number (01–05), title, tagline, deliverables list with check icons, timeline chip                                          |
 | **Stat counter**       | Big number + label; SSR final value; count-up 1.2 s when 40 % in view                                                                     |
@@ -86,8 +86,8 @@ Contrast checks: orange `#FF9500` on `#050816` ≈ 8.9:1 ✅; muted `#86868B` on
 
 - lucide icons, 1.5 px stroke, accent colour inside tinted squares.
 - No stock photography of people at laptops. Proof comes from UI mockups (dashboards, rank tables, map pins).
-- Abstract background: subtle radial orange glow top-right of hero, faint grid pattern.
-- OG image: dark background, logo, page title in Exo, orange underline.
+- Abstract background: subtle radial cyan/blue glow top-right of hero, faint grid pattern.
+- OG image: dark background, logo, page title in Exo, cyan → blue underline.
 
 ## 8. Responsive behaviour
 

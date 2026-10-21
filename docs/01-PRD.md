@@ -102,6 +102,7 @@ Eyebrow, H1, sub, 2 CTAs → 3 outcome cards → 6 deliverables + timeline → 5
 | Area          | Reference                                  | Ours                                                                              |
 | ------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
 | Brand         | Rank Esprit                                | **Skopos Codex** branding, copy and contact details (placeholder until confirmed) |
+| Colours       | Navy + orange                              | Navy + cyan → blue from the Skopos Codex logo (Design Brief §2)                   |
 | Stat counters | Render "0%"                                | SSR final values; animate only as enhancement                                     |
 | Legal         | Privacy / Terms link to `#`                | Real `/privacy` and `/terms` pages                                                |
 | Socials       | Unlabeled `#` icons                        | Real URLs + `aria-label`s, or hidden until available                              |
