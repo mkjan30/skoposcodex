@@ -1,5 +1,7 @@
 import { Gauge, LayoutTemplate, Smartphone } from "lucide-react";
 
+import { portfolio } from "@/content/portfolio";
+
 import type { ServiceContent } from "./types";
 
 export const websiteDesign: ServiceContent = {
@@ -170,4 +172,5 @@ export const websiteDesign: ServiceContent = {
       "Get a free website review. We will check speed, mobile experience, and conversion paths, and show you what to fix first.",
     points: ["Free website review", "Fixed project price", "You own the site"],
   },
+  portfolio,
 };

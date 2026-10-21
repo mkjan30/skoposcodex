@@ -43,7 +43,7 @@ Build a marketing website for a digital growth agency that replicates the struct
 | `/services/local-seo`       | Service page (shared template)                                                                                                          |
 | `/services/ppc`             | Service page                                                                                                                            |
 | `/services/branding`        | Service page                                                                                                                            |
-| `/services/website-design`  | Service page                                                                                                                            |
+| `/services/website-design`  | Service page + "Recent work" portfolio (desktop/phone previews, live links; `src/content/portfolio.ts`)                                 |
 | `/services/funnel-building` | Service page                                                                                                                            |
 | `/process`                  | 5-step method (Analyze, Strategize, Build, Optimize, Scale) with deliverables + timelines, FAQ                                          |
 | `/why-us`                   | Differentiators, comparison table, results, testimonials, what-you-get, CTA                                                             |

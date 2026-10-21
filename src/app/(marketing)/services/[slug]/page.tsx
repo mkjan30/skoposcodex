@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CtaBand } from "@/components/sections/cta-band";
 import { FaqAccordion } from "@/components/sections/faq-accordion";
 import { JsonLd } from "@/components/seo/json-ld";
+import { PortfolioShowcase } from "@/components/sections/portfolio-showcase";
 import { Reveal } from "@/components/sections/reveal";
 import { SectionHeader } from "@/components/sections/section-header";
 import { ServiceCard } from "@/components/sections/service-card";
@@ -113,6 +114,8 @@ export default async function ServicePage({ params }: Props) {
           ))}
         </div>
       </section>
+
+      {c.portfolio && <PortfolioShowcase projects={c.portfolio} />}
 
       {/* Deliverables */}
       <section id="included" className="container-page scroll-mt-24 pb-20 sm:pb-28">

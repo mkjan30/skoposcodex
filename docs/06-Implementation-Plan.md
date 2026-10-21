@@ -87,6 +87,11 @@ Removed: review step, address/team/history questions, most service-specific ques
 
 **Done when:** each service path can be completed on mobile and desktop, the file lands in the private bucket, row + file appear in DB.
 
+### Added after Phase 5 — Portfolio showcase ✅
+
+- `/services/website-design` shows a "Recent work" section (Elixir Muscle, The Agency, Speedy Care): browser + phone frames that scroll on hover, with live-site links. Data lives in `src/content/portfolio.ts`; screenshots in `src/assets/portfolio/`.
+- To refresh a screenshot: capture the site with headless Chrome via CDP (desktop 1440px wide, mobile 390px @2x, top ~2,600px), save as JPEG (~q75) over the existing file.
+
 ## Phase 6 — Admin (day 16–17)
 
 - [ ] Magic-link login, middleware guard, `admins` allow-list

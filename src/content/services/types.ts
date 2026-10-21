@@ -1,5 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
+import type { PortfolioProject } from "@/content/portfolio";
+
 import type { Faq } from "@/components/sections/faq-accordion";
 import type { Step } from "@/components/sections/step-card";
 import type { Stat } from "@/lib/format-stat";
@@ -27,4 +29,6 @@ export type ServiceContent = {
   caseStudy: { industry: string; result: string; summary: string }; // TODO(launch): real case study
   faqs: Faq[]; // 6
   cta: { title: string; description: string; points: string[] }; // 3 points
+  /** Optional "Recent work" showcase, shown after the outcomes. */
+  portfolio?: PortfolioProject[];
 };
