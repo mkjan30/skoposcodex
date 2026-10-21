@@ -1,0 +1,98 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Skopos Codex Logo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;800&display=swap">
+<style>
+/* layout: one centered stage, logo scales to width; single dark world (the mark lives on navy) */
+:root{
+  --bg:#0b1627; --fg:#ffffff; --fg-dim:#9fb3c8;
+  --c1:#19e3ff; --c2:#0a6cff; --dot:#19e3ff;
+  --display:"Montserrat",system-ui,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.stage{width:min(100%,820px)}
+svg{width:100%;height:auto;display:block;overflow:visible}
+
+/* ---------- animation ---------- */
+.leg,.head,.bar{transform-box:fill-box;transform-origin:50% 100%}
+.leg{opacity:0;animation:rise .7s cubic-bezier(.2,.8,.2,1) forwards}
+.leg.l{animation-delay:.15s;--dx:-40px}
+.leg.m{animation-delay:.3s;--dx:0px}
+.leg.r{animation-delay:.45s;--dx:40px}
+.bar{opacity:0;transform-origin:50% 100%;transform:scaleY(0);animation:grow .5s .75s cubic-bezier(.2,.8,.2,1) forwards}
+.head{opacity:0;transform:translateY(60px) scale(.6);animation:fire .55s 1.05s cubic-bezier(.2,.9,.3,1.2) forwards}
+.word>*{opacity:0;transform:translateY(14px);animation:fade .5s cubic-bezier(.2,.8,.2,1) forwards}
+.skopos{animation-delay:1.45s!important}
+.codex{animation-delay:1.7s!important;letter-spacing:38px;animation-name:track!important;animation-duration:.8s!important}
+.tag>*{opacity:0;animation:fade .45s cubic-bezier(.2,.8,.2,1) forwards}
+.tag>:nth-child(1){animation-delay:2.1s}.tag>:nth-child(2){animation-delay:2.25s}
+.tag>:nth-child(3){animation-delay:2.35s}.tag>:nth-child(4){animation-delay:2.5s}
+.tag>:nth-child(5){animation-delay:2.6s}
+.sheen{opacity:0;animation:sweep 2.6s 2.9s ease-in-out infinite}
+
+@keyframes rise{from{opacity:0;transform:translate(var(--dx),80px)}to{opacity:1;transform:none}}
+@keyframes grow{from{opacity:1;transform:scaleY(0)}to{opacity:1;transform:none}}
+@keyframes fire{to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1;transform:none}}
+@keyframes track{from{opacity:0;letter-spacing:38px}to{opacity:1;letter-spacing:14px}}
+@keyframes sweep{0%{opacity:0;transform:translateX(-520px) skewX(-20deg)}15%{opacity:.55}50%{opacity:0;transform:translateX(620px) skewX(-20deg)}100%{opacity:0;transform:translateX(620px) skewX(-20deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  .leg,.bar,.head,.word>*,.tag>*{animation:none;opacity:1;transform:none;letter-spacing:inherit}
+  .codex{letter-spacing:14px}.sheen{display:none}
+}
+
+button{font:500 13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);
+  background:transparent;border:1px solid var(--fg-dim);border-radius:999px;padding:12px 22px;cursor:pointer}
+button:hover,button:focus-visible{border-color:var(--c1);outline:none;box-shadow:0 0 0 3px rgba(25,227,255,.25)}
+</style>
+
+<div class="stage" id="stage">
+<svg viewBox="380 80 780 790" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Skopos Codex animated logo">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="var(--c1)"/><stop offset="1" stop-color="var(--c2)"/>
+    </linearGradient>
+    <linearGradient id="s" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="mark"><use href="#shapes"/></clipPath>
+  </defs>
+
+  <g id="shapes" fill="url(#g)">
+    <polygon class="leg l" points="700,310 740,350 545,475 470,475"/>
+    <polygon class="leg m" points="745,352 791,352 870,475 666,475"/>
+    <polygon class="leg r" points="836,310 796,350 991,475 1066,475"/>
+    <polygon class="bar"   points="745,200 791,200 791,345 745,345"/>
+    <polygon class="head"  points="768,135 905,290 845,290 768,213 691,290 631,290"/>
+  </g>
+  <g clip-path="url(#mark)">
+    <rect class="sheen" x="640" y="100" width="90" height="420" fill="url(#s)"/>
+  </g>
+
+  <g class="word" fill="var(--fg)" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif">
+    <text class="skopos" x="768" y="640" font-size="132" font-weight="800">SKOPOS</text>
+    <text class="codex"  x="776" y="740" font-size="84"  font-weight="300">CODEX</text>
+  </g>
+  <g class="tag" fill="var(--fg)" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif" font-size="33" font-weight="500" letter-spacing="6">
+    <text x="560" y="830">WEBSITES</text>
+    <circle cx="700" cy="819" r="6" fill="var(--dot)"/>
+    <text x="840" y="830">BRANDING</text>
+    <circle cx="975" cy="819" r="6" fill="var(--dot)"/>
+    <text x="1125" y="830" text-anchor="middle">MARKETING</text>
+  </g>
+</svg>
+</div>
+<button id="replay" type="button">Replay</button>
+
+<script>
+document.getElementById('replay').addEventListener('click',()=>{
+  const s=document.getElementById('stage');const h=s.innerHTML;s.innerHTML='';void s.offsetWidth;s.innerHTML=h;
+});
+</script>
+
+</body></html>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="410 80 880 790" role="img" aria-label="Skopos Codex — Websites, Branding, Marketing">
+  <!-- Static version of docs/brand/skopos-codex-logo-animated.html. Text uses Montserrat; it falls back to system sans if the font is not installed. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#19e3ff"/>
+      <stop offset="1" stop-color="#0a6cff"/>
+    </linearGradient>
+  </defs>
+  <rect x="410" y="80" width="880" height="790" fill="#0b1627"/>
+  <g fill="url(#g)">
+    <polygon points="700,310 740,350 545,475 470,475"/>
+    <polygon points="745,352 791,352 870,475 666,475"/>
+    <polygon points="836,310 796,350 991,475 1066,475"/>
+    <polygon points="745,200 791,200 791,345 745,345"/>
+    <polygon points="768,135 905,290 845,290 768,213 691,290 631,290"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif">
+    <text x="768" y="640" font-size="132" font-weight="800">SKOPOS</text>
+    <text x="776" y="740" font-size="84" font-weight="300" letter-spacing="14">CODEX</text>
+    <g font-size="33" font-weight="500" letter-spacing="6">
+      <text x="560" y="830">WEBSITES</text>
+      <circle cx="700" cy="819" r="6" fill="#19e3ff"/>
+      <text x="840" y="830">BRANDING</text>
+      <circle cx="975" cy="819" r="6" fill="#19e3ff"/>
+      <text x="1125" y="830">MARKETING</text>
+    </g>
+  </g>
+</svg>

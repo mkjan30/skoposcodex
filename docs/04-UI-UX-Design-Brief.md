@@ -109,5 +109,5 @@ Contrast checks: orange `#FF9500` on `#050816` ≈ 8.9:1 ✅; muted `#86868B` on
 ## 10. Deliverables from design
 
 1. Token file (`globals.css` CSS variables) — can be built straight from §2–4.
-2. Logo (SVG, light + dark) and favicon set — **needed from you**.
+2. Logo — **received** (`docs/brand/skopos-codex-logo-animated.html`); static copy at `public/brand/skopos-codex-logo.svg`, favicon at `src/app/icon.svg`. Brand mark colours: `#19E3FF` → `#0A6CFF` on `#0B1627`, wordmark in Montserrat 800/300.
 3. Page compositions for Home, Service, Process, Why Us, Contact, Onboard, Admin (desktop + mobile) — optional; we can build directly from this brief and iterate in the browser.

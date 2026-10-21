@@ -9,7 +9,7 @@
 
 | Item                                                                                    | Owner | Status |
 | --------------------------------------------------------------------------------------- | ----- | ------ |
-| Final brand name, logo (SVG), favicon                                                   | You   | ☐      |
+| Final brand name, logo (SVG), favicon                                                   | You   | ☑      |
 | Confirm the "few changes" list (PRD §7)                                                 | You   | ☐      |
 | Real contact email, phone, location, social URLs                                        | You   | ☐      |
 | Real stats, testimonials, case study (or approval to ship placeholders as clearly fake) | You   | ☐      |
