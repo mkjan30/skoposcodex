@@ -34,8 +34,9 @@ Set the same variables in Vercel → Project → Settings → Environment Variab
 
 ## Deploy
 
-- Vercel project `skopos-codex` (team "Maksud's projects") is connected to this GitHub repo: every push to `main` deploys to production, other branches get preview URLs.
-- Live: https://skopos-codex.vercel.app (custom domain to be attached; DNS on Cloudflare).
+- Vercel project **`skoposcodex`** (team "Maksud's projects") is connected to this GitHub repo: every push to `main` deploys to production; other branches get preview URLs.
+- Live: **https://www.skoposcodex.com** (primary). DNS is on Cloudflare: `www` is a CNAME to Vercel (DNS only); the bare domain is redirected to `www` by a Cloudflare Redirect Rule.
+- Known issue: `skoposcodex.com` can't be attached in Vercel yet — a stale alias from a deleted project (`prj_Ab9HohqtgEk64YXNmTjrm3FZTaNM`) blocks it and needs Vercel support to clear.
 - `ENABLE_EXPERIMENTAL_COREPACK=1` is set on Vercel so builds use the pnpm version in `package.json`.
 - The site URL (canonical, sitemap, OG) comes from `NEXT_PUBLIC_SITE_URL`, else Vercel's production domain.
 
