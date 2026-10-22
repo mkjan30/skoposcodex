@@ -60,7 +60,7 @@ function Showcase({ p }: { p: PortfolioProject }) {
 /** "Recent work": desktop + mobile previews with a live link for each project. */
 export function PortfolioShowcase({ projects }: { projects: PortfolioProject[] }) {
   return (
-    <section className="container-page pb-20 sm:pb-28">
+    <section className="container-page pb-24 md:pb-36">
       <SectionHeader
         eyebrow="Recent work"
         title={

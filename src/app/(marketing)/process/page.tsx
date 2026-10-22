@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { CtaBand } from "@/components/sections/cta-band";
 import { FaqAccordion } from "@/components/sections/faq-accordion";
+import { PageHero } from "@/components/sections/page-hero";
 import { Reveal } from "@/components/sections/reveal";
 import { SectionHeader } from "@/components/sections/section-header";
 import { StatCounter } from "@/components/sections/stat-counter";
@@ -18,23 +22,47 @@ export const metadata: Metadata = {
 export default function ProcessPage() {
   return (
     <>
-      <section className="container-page grid items-end gap-12 py-16 sm:py-24 lg:grid-cols-[1.5fr_1fr]">
+      <PageHero
+        eyebrow="How we work"
+        title="A proven growth process."
+        highlight="Every time."
+        description="Every engagement follows the same disciplined five-step method, designed to produce results that compound. No templates. No shortcuts."
+        actions={
+          <>
+            <Button asChild variant="brand" size="xl">
+              <Link href="/contact">
+                Book a strategy call <ArrowRight />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="brand-outline"
+              size="xl"
+              className="bg-black/50 backdrop-blur-md"
+            >
+              <Link href="/why-us">Why choose us</Link>
+            </Button>
+          </>
+        }
+      >
+        <div className="bg-card mx-auto max-w-xs rounded-2xl border p-6">
+          <StatCounter {...retentionStat} tone="white" />
+        </div>
+      </PageHero>
+
+      <section className="container-page py-24 md:py-36">
         <SectionHeader
-          as="h1"
-          eyebrow="How we work"
+          eyebrow="The method"
           title={
             <>
-              A proven growth process. <span className="text-gradient">Every time.</span>
+              Five steps.
+              <br />
+              <span className="text-gradient">One repeatable growth system.</span>
             </>
           }
-          description="Every engagement follows the same disciplined five-step method, designed to produce results that compound. No templates. No shortcuts."
+          className="mb-16"
         />
-        <StatCounter {...retentionStat} className="lg:text-right" />
-      </section>
-
-      <section className="container-page pb-20 sm:pb-28">
-        <SectionHeader title="Five steps. One repeatable growth system." />
-        <ol className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {processSteps.map((step, i) => (
             <li key={step.title}>
               <Reveal index={i % 3} className="h-full">
@@ -45,7 +73,7 @@ export default function ProcessPage() {
         </ol>
       </section>
 
-      <section className="container-page grid gap-12 pb-8 lg:grid-cols-[1fr_1.4fr]">
+      <section className="container-page grid gap-12 pb-24 md:pb-36 lg:grid-cols-[1fr_1.4fr]">
         <SectionHeader eyebrow="FAQ" title="Common questions about our process" />
         <FaqAccordion items={processFaqs} />
       </section>

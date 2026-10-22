@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { FileLock2, Lock, UserCheck, Zap } from "lucide-react";
 
 import { OnboardingWizard } from "@/components/onboarding/wizard";
-import { SectionHeader } from "@/components/sections/section-header";
+import { PageHero } from "@/components/sections/page-hero";
+import { Reveal } from "@/components/sections/reveal";
 
 export const metadata: Metadata = {
   title: "Client Onboarding",
@@ -22,18 +23,15 @@ const badges = [
 export default function OnboardPage() {
   return (
     <>
-      <section className="container-page pt-16 sm:pt-24">
-        <SectionHeader
-          as="h1"
-          eyebrow="Client onboarding"
-          title={
-            <>
-              Let&apos;s build your <span className="text-gradient">growth strategy together.</span>
-            </>
-          }
-          description="Three quick steps, about 3 minutes. We’ll cover the rest on your kickoff call. Your answers save automatically in this browser."
-        />
-        <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <PageHero
+        eyebrow="Client onboarding"
+        icon={<UserCheck className="text-brand size-3.5" aria-hidden />}
+        title="Let's build your"
+        highlight="growth strategy."
+        description="Three quick steps, about 3 minutes. We’ll cover the rest on your kickoff call. Your answers save automatically in this browser."
+        className="md:pb-16"
+      >
+        <ul className="grid gap-3 text-left sm:grid-cols-2 lg:grid-cols-4">
           {badges.map((b) => (
             <li key={b.title} className="bg-card flex gap-3 rounded-2xl border p-4">
               <span className="bg-brand/10 text-brand grid size-9 shrink-0 place-items-center rounded-lg">
@@ -46,10 +44,10 @@ export default function OnboardPage() {
             </li>
           ))}
         </ul>
-      </section>
+      </PageHero>
 
-      <section className="container-page py-12 sm:py-16">
-        <div className="bg-card rounded-3xl border p-5 sm:p-10">
+      <section className="container-page pb-24 md:pb-36">
+        <Reveal className="bg-card rounded-3xl border p-5 sm:p-10">
           <noscript>
             <p className="text-muted-foreground">
               Onboarding needs JavaScript. Please enable it, or email us and we&apos;ll send the
@@ -57,7 +55,7 @@ export default function OnboardPage() {
             </p>
           </noscript>
           <OnboardingWizard />
-        </div>
+        </Reveal>
       </section>
     </>
   );

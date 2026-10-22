@@ -12,6 +12,8 @@ import {
 
 import { ContactForm } from "@/components/contact/contact-form";
 import { FaqAccordion } from "@/components/sections/faq-accordion";
+import { PageHero } from "@/components/sections/page-hero";
+import { Reveal } from "@/components/sections/reveal";
 import { SectionHeader } from "@/components/sections/section-header";
 import { site } from "@/content/site";
 import { serviceFromSlug } from "@/lib/contact-services";
@@ -76,25 +78,21 @@ export default async function ContactPage({
 
   return (
     <>
-      <section className="container-page pt-16 sm:pt-24">
-        <SectionHeader
-          as="h1"
-          eyebrow="Get in touch"
-          title={
-            <>
-              Let&apos;s build your <span className="text-gradient">growth strategy.</span>
-            </>
-          }
-          description="Tell us where you are and where you want to be. A senior strategist will reach out within 24 hours to book your free strategy call."
-        />
-      </section>
+      <PageHero
+        eyebrow="Get in touch"
+        icon={<Zap className="text-brand size-3.5" aria-hidden />}
+        title="Let's build your"
+        highlight="growth strategy."
+        description="Tell us where you are and where you want to be. A senior strategist will reach out within 24 hours to book your free strategy call."
+        className="md:pb-16"
+      />
 
-      <section className="container-page grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.6fr_1fr]">
-        <div className="bg-card flex flex-col justify-center rounded-3xl border p-5 sm:p-10">
+      <section className="container-page grid gap-8 pb-24 md:pb-36 lg:grid-cols-[1.6fr_1fr]">
+        <Reveal className="bg-card flex flex-col justify-center rounded-3xl border p-5 sm:p-10">
           <ContactForm defaultService={serviceFromSlug(service)} />
-        </div>
+        </Reveal>
 
-        <aside className="space-y-8">
+        <Reveal index={1} className="space-y-8">
           {details.length > 0 && (
             <div className="bg-card rounded-2xl border p-6">
               <h2 className="text-lg font-semibold">Contact information</h2>
@@ -136,10 +134,10 @@ export default async function ContactPage({
               ))}
             </ul>
           </div>
-        </aside>
+        </Reveal>
       </section>
 
-      <section className="container-page grid gap-12 py-12 sm:py-20 lg:grid-cols-[1fr_1.4fr]">
+      <section className="container-page grid gap-12 pb-24 md:pb-36 lg:grid-cols-[1fr_1.4fr]">
         <SectionHeader eyebrow="FAQ" title="Common questions" />
         <FaqAccordion items={faqs} />
       </section>
