@@ -43,7 +43,9 @@ export default function HomePage() {
         <div className="hero-glow" aria-hidden />
         {/* Interactive dot grid over the glow (WebGL2; listens on window, so it never blocks clicks). */}
         <DotField
-          className="pointer-events-none absolute! inset-0"
+          // Mask: dots fade out behind the headline/copy (centered ellipse), full strength at the edges.
+          className="pointer-events-none absolute! inset-0 [mask-image:radial-gradient(ellipse_55%_38%_at_50%_34%,transparent_35%,black_100%)]"
+          baseOpacity={0.4}
           gradientFrom="#19e3ff"
           gradientTo="#2b8cff"
           dotRadius={1.5}
