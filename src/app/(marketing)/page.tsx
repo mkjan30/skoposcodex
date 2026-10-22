@@ -8,6 +8,7 @@ import { NoGuessworkScene } from "@/components/home/no-guesswork-scene";
 import { ProcessTimeline } from "@/components/home/process-timeline";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DashboardCard } from "@/components/sections/dashboard-card";
+import DotField from "@/components/home/dot-field";
 import { IndustriesMarquee } from "@/components/sections/industries-marquee";
 import { PillarGrid } from "@/components/sections/pillar-grid";
 import { Reveal } from "@/components/sections/reveal";
@@ -40,6 +41,17 @@ export default function HomePage() {
       {/* Hero: centered, staggered page-load entrances (en-* classes, delays as in the reference). */}
       <section className="relative -mt-18 overflow-hidden pt-36 pb-20 md:pt-44">
         <div className="hero-glow" aria-hidden />
+        {/* Interactive dot grid over the glow (WebGL2; listens on window, so it never blocks clicks). */}
+        <DotField
+          className="pointer-events-none absolute! inset-0"
+          gradientFrom="#19e3ff"
+          gradientTo="#2b8cff"
+          dotRadius={1.5}
+          dotSpacing={14}
+          cursorRadius={240}
+          bulgeStrength={0.6}
+          glowRadius={160}
+        />
         <div className="container-page relative z-10 text-center">
           <div className="en-settle" style={{ animationDelay: ".12s" }}>
             <Link href="/process" className="pill-badge">
