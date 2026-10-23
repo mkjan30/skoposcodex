@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 // DotField from React Bits (https://reactbits.dev), JavaScript + CSS variant, copied unchanged
 // apart from the CSS import path and a `style` default (so TS sees it as optional). WebGL2 dot grid with a cursor lens; renders nothing without WebGL2.
-import { useEffect, useRef, useState } from 'react';
-import './dot-field.css';
+import { useEffect, useRef, useState } from "react";
+import "./dot-field.css";
 
 const PIXEL_BUDGET = 9e6;
 const MAX_DOTS = 120000;
@@ -154,21 +154,22 @@ void main() {
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const parseColor = value => {
-  const text = String(value || '').trim();
+const parseColor = (value) => {
+  const text = String(value || "").trim();
   const hex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(text);
   if (hex) {
-    const full = hex[1].length === 3 ? hex[1].replace(/./g, digit => digit + digit) : hex[1];
-    return [0, 2, 4].map(index => parseInt(full.slice(index, index + 2), 16) / 255);
+    const full = hex[1].length === 3 ? hex[1].replace(/./g, (digit) => digit + digit) : hex[1];
+    return [0, 2, 4].map((index) => parseInt(full.slice(index, index + 2), 16) / 255);
   }
   const rgb = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(text);
-  if (rgb) return [rgb[1], rgb[2], rgb[3]].map(channel => clamp(parseFloat(channel) / 255, 0, 1));
+  if (rgb) return [rgb[1], rgb[2], rgb[3]].map((channel) => clamp(parseFloat(channel) / 255, 0, 1));
   return null;
 };
 
-const toLinear = channel => (channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4));
+const toLinear = (channel) =>
+  channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
 
-const toOklab = color => {
+const toOklab = (color) => {
   const [r, g, b] = color.map(toLinear);
   const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
   const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
@@ -176,7 +177,7 @@ const toOklab = color => {
   return [
     0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
     1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
-    0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+    0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
   ];
 };
 
@@ -191,7 +192,7 @@ const toInk = (value, fallback, light) => {
   return [ceiling, lab[1] * boost, lab[2] * boost];
 };
 
-const chroma = value => {
+const chroma = (value) => {
   const lab = toOklab(parseColor(value) || [1, 1, 1]);
   return Math.hypot(lab[1], lab[2]);
 };
@@ -211,7 +212,10 @@ const lensReach = (radius, strength, twist) => {
     const sigma = x * radius;
     const grow = 1 + strength * w;
     const theta = twist * w;
-    peak = Math.max(peak, Math.hypot(sigma * (grow * Math.cos(theta) - 1), sigma * grow * Math.sin(theta)));
+    peak = Math.max(
+      peak,
+      Math.hypot(sigma * (grow * Math.cos(theta) - 1), sigma * grow * Math.sin(theta)),
+    );
   }
   return peak;
 };
@@ -234,7 +238,12 @@ const buildDots = (width, height, step, pattern, margin) => {
     for (let index = 0; index < count; index++) {
       const r = spacing * Math.sqrt(index + 0.5);
       const angle = index * GOLDEN_ANGLE;
-      push(cx + r * Math.cos(angle), cy + r * Math.sin(angle), hash(index, 0, 3), hash(index, 0, 4));
+      push(
+        cx + r * Math.cos(angle),
+        cy + r * Math.sin(angle),
+        hash(index, 0, 3),
+        hash(index, 0, 4),
+      );
     }
   } else {
     const rowStep = pattern === PATTERNS.hex ? (step * Math.sqrt(3)) / 2 : step;
@@ -268,7 +277,7 @@ const compile = (gl, type, source) => {
   return shader;
 };
 
-const link = gl => {
+const link = (gl) => {
   const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
   const fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
   const program = vertex && fragment ? gl.createProgram() : null;
@@ -299,14 +308,14 @@ const link = gl => {
 const DotField = ({
   dotRadius = 1.5,
   dotSpacing = 14,
-  pattern = 'grid',
-  gradientFrom = '#5227FF',
-  gradientTo = '#FF9FFC',
+  pattern = "grid",
+  gradientFrom = "#5227FF",
+  gradientTo = "#FF9FFC",
   gradientAngle = 135,
   cursorRadius = 240,
   bulgeStrength = 0.6,
   twist = 0,
-  glowColor = '#ffffff',
+  glowColor = "#ffffff",
   glowRadius = 160,
   glowIntensity = 0.8,
   baseOpacity = 0.55,
@@ -319,8 +328,8 @@ const DotField = ({
   lightMode = false,
   opacity = 1,
   maxDevicePixelRatio = 2,
-  className = '',
-  style = undefined
+  className = "",
+  style = undefined,
 }) => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -353,7 +362,7 @@ const DotField = ({
     intro,
     light: lightMode,
     opacity: clamp(opacity, 0, 1),
-    maxRatio: clamp(maxDevicePixelRatio, 0.5, 3)
+    maxRatio: clamp(maxDevicePixelRatio, 0.5, 3),
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -367,18 +376,18 @@ const DotField = ({
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
-    const gl = canvas.getContext('webgl2', {
+    const gl = canvas.getContext("webgl2", {
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
       depth: false,
       stencil: false,
-      powerPreference: 'high-performance'
+      powerPreference: "high-performance",
     });
     const shader = gl ? link(gl) : null;
     if (!gl || !shader) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const vao = gl.createVertexArray();
     const buffer = gl.createBuffer();
     gl.bindVertexArray(vao);
@@ -391,14 +400,14 @@ const DotField = ({
     const size = { width: 1, height: 1, ratio: 1 };
     const pointer = { x: 0, y: 0, inside: false, down: false };
     const lens = { x: 0, y: 0, vx: 0, vy: 0, presence: 0, zoom: 0, ready: false };
-    let layoutKey = '';
+    let layoutKey = "";
     let count = 0;
     let time = Math.random() * 100;
     let focus = settingsRef.current.intro && !reduced && generation === 0 ? 0 : 1;
     let raf = 0;
     let last = 0;
     let visible = true;
-    let pageVisible = document.visibilityState !== 'hidden';
+    let pageVisible = document.visibilityState !== "hidden";
     let lost = false;
 
     const strengthOf = (s, zoom) => {
@@ -408,7 +417,11 @@ const DotField = ({
 
     const layout = () => {
       const s = settingsRef.current;
-      const reach = lensReach(s.lensRadius, strengthOf(s, s.holdToZoom ? 1 : 0), s.twist * (s.holdToZoom ? 1.6 : 1));
+      const reach = lensReach(
+        s.lensRadius,
+        strengthOf(s, s.holdToZoom ? 1 : 0),
+        s.twist * (s.holdToZoom ? 1.6 : 1),
+      );
       const margin = Math.ceil(reach + s.wave + s.step * 2);
       const area = (size.width + margin * 2) * (size.height + margin * 2);
       const step = Math.max(s.step, Math.sqrt(area / MAX_DOTS));
@@ -429,7 +442,7 @@ const DotField = ({
       const ratio = Math.min(
         window.devicePixelRatio || 1,
         s.maxRatio,
-        Math.sqrt(PIXEL_BUDGET / (cssWidth * cssHeight))
+        Math.sqrt(PIXEL_BUDGET / (cssWidth * cssHeight)),
       );
       const width = Math.max(1, Math.round(cssWidth * ratio));
       const height = Math.max(1, Math.round(cssHeight * ratio));
@@ -443,7 +456,7 @@ const DotField = ({
       layout();
     };
 
-    const frame = now => {
+    const frame = (now) => {
       raf = 0;
       if (lost) return;
       const s = settingsRef.current;
@@ -475,7 +488,8 @@ const DotField = ({
         lens.y = ny;
       }
       const presenceTarget = tracking ? 1 : 0;
-      lens.presence += (presenceTarget - lens.presence) * (1 - Math.exp(-dt / (tracking ? 0.18 : 0.4)));
+      lens.presence +=
+        (presenceTarget - lens.presence) * (1 - Math.exp(-dt / (tracking ? 0.18 : 0.4)));
       const zoomTarget = tracking && pointer.down && s.holdToZoom ? 1 : 0;
       lens.zoom += (zoomTarget - lens.zoom) * (1 - Math.exp(-dt / 0.14));
 
@@ -501,7 +515,7 @@ const DotField = ({
         u.uGlow,
         s.glowRadius * (1 + lens.zoom * 0.1),
         s.glowIntensity * (1 + lens.zoom * 0.25),
-        s.light ? 0 : 1
+        s.light ? 0 : 1,
       );
       gl.uniform3f(u.uFrom, s.from[0], s.from[1], s.from[2]);
       gl.uniform3f(u.uTo, s.to[0], s.to[1], s.to[2]);
@@ -517,7 +531,8 @@ const DotField = ({
       if (count) gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, count);
 
       const moving =
-        Math.abs(pointer.x - lens.x) + Math.abs(pointer.y - lens.y) > 0.05 || Math.hypot(lens.vx, lens.vy) > 0.5;
+        Math.abs(pointer.x - lens.x) + Math.abs(pointer.y - lens.y) > 0.05 ||
+        Math.hypot(lens.vx, lens.vy) > 0.5;
       const settling =
         Math.abs(presenceTarget - lens.presence) > 0.002 ||
         Math.abs(zoomTarget - lens.zoom) > 0.002 ||
@@ -537,7 +552,7 @@ const DotField = ({
       wake();
     };
 
-    const locate = event => {
+    const locate = (event) => {
       const rect = container.getBoundingClientRect();
       return {
         x: event.clientX - rect.left,
@@ -546,18 +561,18 @@ const DotField = ({
           event.clientX >= rect.left &&
           event.clientX <= rect.right &&
           event.clientY >= rect.top &&
-          event.clientY <= rect.bottom
+          event.clientY <= rect.bottom,
       };
     };
 
-    const onPointerMove = event => {
+    const onPointerMove = (event) => {
       const spot = locate(event);
       pointer.x = spot.x;
       pointer.y = spot.y;
       pointer.inside = spot.inside;
       wake();
     };
-    const onPointerDown = event => {
+    const onPointerDown = (event) => {
       const spot = locate(event);
       pointer.x = spot.x;
       pointer.y = spot.y;
@@ -570,26 +585,26 @@ const DotField = ({
       pointer.down = false;
       wake();
     };
-    const onPointerUp = event => {
+    const onPointerUp = (event) => {
       pointer.down = false;
-      if (event.pointerType !== 'mouse') pointer.inside = false;
+      if (event.pointerType !== "mouse") pointer.inside = false;
       wake();
     };
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
-    window.addEventListener('pointerup', onPointerUp, { passive: true });
-    window.addEventListener('pointercancel', onPointerUp, { passive: true });
-    document.documentElement.addEventListener('pointerleave', onLeave);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("pointerup", onPointerUp, { passive: true });
+    window.addEventListener("pointercancel", onPointerUp, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
 
-    const onLost = event => {
+    const onLost = (event) => {
       event.preventDefault();
       lost = true;
       cancelAnimationFrame(raf);
       raf = 0;
     };
-    const onRestored = () => setGeneration(value => value + 1);
-    canvas.addEventListener('webglcontextlost', onLost);
-    canvas.addEventListener('webglcontextrestored', onRestored);
+    const onRestored = () => setGeneration((value) => value + 1);
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
 
     const resizeObserver = new ResizeObserver(() => {
       resize();
@@ -597,17 +612,17 @@ const DotField = ({
     });
     resizeObserver.observe(container);
 
-    const intersection = new IntersectionObserver(entries => {
-      visible = entries.some(entry => entry.isIntersecting);
+    const intersection = new IntersectionObserver((entries) => {
+      visible = entries.some((entry) => entry.isIntersecting);
       wake();
     });
     intersection.observe(container);
 
     const onVisibility = () => {
-      pageVisible = document.visibilityState !== 'hidden';
+      pageVisible = document.visibilityState !== "hidden";
       wake();
     };
-    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener("visibilitychange", onVisibility);
 
     resize();
     wake();
@@ -617,14 +632,14 @@ const DotField = ({
       wakeRef.current = null;
       resizeObserver.disconnect();
       intersection.disconnect();
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('pointercancel', onPointerUp);
-      document.documentElement.removeEventListener('pointerleave', onLeave);
-      document.removeEventListener('visibilitychange', onVisibility);
-      canvas.removeEventListener('webglcontextlost', onLost);
-      canvas.removeEventListener('webglcontextrestored', onRestored);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
       if (!gl.isContextLost()) {
         gl.deleteBuffer(buffer);
         gl.deleteVertexArray(vao);
@@ -634,7 +649,11 @@ const DotField = ({
   }, [generation]);
 
   return (
-    <div ref={containerRef} className={`dot-field${className ? ` ${className}` : ''}`} style={style}>
+    <div
+      ref={containerRef}
+      className={`dot-field${className ? ` ${className}` : ""}`}
+      style={style}
+    >
       <canvas ref={canvasRef} className="dot-field__canvas" aria-hidden="true" />
     </div>
   );
